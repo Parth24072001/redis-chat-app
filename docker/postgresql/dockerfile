@@ -1,0 +1,21 @@
+# FROM postgres:14-alpine
+# RUN addgroup -g 1000 pg && adduser -u 1000 -s /bin/bash -G pg -D pg
+# COPY --chown=pg:pg . /var/lib/postgresql/data
+# USER pg
+# EXPOSE 5432
+
+# db:
+#     build:
+#       context: ./docker/postgresql
+#     container_name: test_db
+#     restart: always
+#     environment:
+#       - POSTGRES_USER=sam
+#       - POSTGRES_PASSWORD=sam
+#       - POSTGRES_DB=test1
+#     ports:
+#       - '5432:5432'
+#     volumes: 
+#       - ./docker/postgresql/lib:/var/lib/postgresql/data
+#     networks:
+#       - test

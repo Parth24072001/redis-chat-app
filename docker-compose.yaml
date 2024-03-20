@@ -1,0 +1,92 @@
+version: "3.8"
+
+networks:
+  custom:
+    driver: bridge
+
+services:
+  # Node
+  node:
+    image: node:18
+    container_name: node_chat
+    tty: true
+    working_dir: /var/www/html
+    ports:
+      - "4000:4000"
+      - "5173:5173"
+    volumes:
+      - .:/var/www/html
+    networks:
+      - custom
+
+  #Mongo
+  mongo:
+    image: mongo:latest
+    container_name: mongo_chat
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./docker/mongo/db:/data/db
+      - ./docker/mongo/log:/var/log/mongodb
+    networks:
+      - custom
+
+  #Postgres
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres_chat
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=chat
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postgresql/lib:/var/lib/postgresql/data
+    networks:
+      - custom
+
+  adminer:
+    image: adminer:latest
+    container_name: adminer_chat
+    ports:
+      - "8080:8080"
+    networks:
+      - custom
+
+  redis:
+    image: redis:latest
+    container_name: redis_chat
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "6379:6379"
+    networks:
+      - custom
+
+  #Zookeeper
+  zookeeper:
+    container_name: zookeeper
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+    networks:
+      - custom
+
+  #Kafka
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: kafka
+    restart: always
+    ports:
+      - "9092:9092"
+    volumes:
+      - ./docker/kafka/lib:/var/lib/kafka/data
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - custom
