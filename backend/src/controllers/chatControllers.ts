@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import Chat from "../models/chatModel";
-import User from "../models/userModel";
+import { User } from "../models/userModel";
 
 const accessChat = asyncHandler(async (req: any, res: any) => {
   const { userId } = req.body;

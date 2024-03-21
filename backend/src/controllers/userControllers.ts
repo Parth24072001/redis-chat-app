@@ -1,8 +1,9 @@
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel";
+import { User } from "../models/userModel";
 import generateToken from "../config/generateToken";
+import { ApiResponse } from "../config/ApiResponse";
 
-const allUsers = asyncHandler(async (req: any, res: any) => {
+const allUsers = asyncHandler(async (req: any, res: any, next: any) => {
   const keyword = req.query.search
     ? {
         $or: [
@@ -16,7 +17,7 @@ const allUsers = asyncHandler(async (req: any, res: any) => {
   res.send(users);
 });
 
-const registerUser = asyncHandler(async (req: any, res: any) => {
+const registerUser = asyncHandler(async (req: any, res: any, next: any) => {
   const { name, email, password, pic } = req.body;
 
   if (!name || !email || !password) {
@@ -39,21 +40,17 @@ const registerUser = asyncHandler(async (req: any, res: any) => {
   });
 
   if (user) {
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      pic: user.pic,
-      token: generateToken(user._id),
-    });
+    const createdUser = await User.findById(user._id);
+    return res
+      .status(201)
+      .json(new ApiResponse(200, createdUser, "User registered Successfully"));
   } else {
     res.status(400);
     throw new Error("User not found");
   }
 });
 
-const authUser = asyncHandler(async (req: any, res: any) => {
+const authUser = asyncHandler(async (req: any, res: any, next: any) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });

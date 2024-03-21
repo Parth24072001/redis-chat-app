@@ -41,7 +41,7 @@ const Login = () => {
             };
 
             const { data } = await axios.post(
-                "/api/user/login",
+                "http://localhost:4000/api/user/login", // Adjusted URL
                 { email, password },
                 config
             );

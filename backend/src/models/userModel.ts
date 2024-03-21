@@ -1,6 +1,5 @@
-import mongoose, { Document, Model } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
-
 interface IUser extends Document {
   name: string;
   email: string;
@@ -9,25 +8,38 @@ interface IUser extends Document {
   isAdmin: boolean;
   matchPassword: (enteredPassword: string) => Promise<boolean>;
 }
-
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema<IUser>(
   {
-    name: { type: String, required: true },
-    email: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
-    pic: {
+    name: {
       type: String,
       required: true,
+    },
+    email: {
+      unique: true,
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    pic: {
+      type: String,
+      required: false,
       default:
         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
+
     isAdmin: {
       type: Boolean,
       required: true,
       default: false,
     },
   },
-  { timestamps: true }
+  {
+    collection: "users",
+    timestamps: true,
+  }
 );
 
 userSchema.pre<any>("save", async function (next) {
@@ -39,6 +51,8 @@ userSchema.pre<any>("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-const User: Model<IUser> = mongoose.model<IUser>("User", userSchema);
+userSchema.methods.matchPassword = async function (enteredPassword: string) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
-export default User;
+export const User = mongoose.model("User", userSchema);
