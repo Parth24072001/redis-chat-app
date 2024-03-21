@@ -77,7 +77,7 @@ function SideDrawer() {
             };
 
             const { data } = await axios.get(
-                `/api/user?search=${search}`,
+                `http://localhost:4000/api/user?search=${search}`,
                 config
             );
 
@@ -106,7 +106,11 @@ function SideDrawer() {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.post(`/api/chat`, { userId }, config);
+            const { data } = await axios.post(
+                `http://localhost:4000/api/chat`,
+                { userId },
+                config
+            );
 
             if (!chats.find((c) => c._id === data._id))
                 setChats([data, ...chats]);
