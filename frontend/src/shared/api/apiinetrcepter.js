@@ -3,7 +3,7 @@ import { getItemFromCookie, removeItemInCookie } from "../helpers/utils";
 import { ACCESSTOKEN } from "../helpers/constant";
 
 const api = axios.create({
-    baseURL: "http://localhost:4000/api/",
+    baseURL: "http://localhost:5000/api/",
     headers: { "Content-type": "application/json" },
 });
 
@@ -14,6 +14,7 @@ api.interceptors.request.use(
         if (accessToken) {
             config.headers["Authorization"] = "Bearer " + accessToken;
         }
+
         return config;
     },
     (error) => {

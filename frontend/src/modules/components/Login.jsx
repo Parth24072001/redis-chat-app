@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import useLogin from "../hooks/useLogin";
-import TogglePasswordVisibilityButton from "../../../shared/components/TogglePasswordVisibilityButton/TogglePasswordVisibilityButton";
+import TogglePasswordVisibilityButton from "../../components/TogglePasswordVisibilityButton/TogglePasswordVisibilityButton";
 import { useLoginForm } from "../hooks/useLoginForm";
 
 const Login = () => {
@@ -26,26 +26,26 @@ const Login = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="mt-4">
                             <label
-                                htmlFor="username"
+                                htmlFor="email"
                                 className="block text-sm font-medium text-gray-700"
                             >
-                                UserName
+                                email
                             </label>
                             <div className="flex flex-col items-start">
                                 <input
                                     type="text"
-                                    name="username"
+                                    name="email"
                                     onChange={handleChange}
-                                    value={values.username}
+                                    value={values.email}
                                     className={`bg-gray-50 border ${
-                                        errors.username
+                                        errors.email
                                             ? "border-red-500"
                                             : "border-gray-300"
                                     } text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                                 />
-                                {errors.username ? (
+                                {errors.email ? (
                                     <span className="text-xs text-red-500 pl-1">
-                                        {errors.username}
+                                        {errors.email}
                                     </span>
                                 ) : (
                                     ""

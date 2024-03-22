@@ -5,6 +5,8 @@ import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
+import { getItemFromCookie } from "../shared/helpers/utils";
+import { ACCESSTOKEN } from "../shared/helpers/constant";
 
 // eslint-disable-next-line react/prop-types
 const MyChats = ({ fetchAgain }) => {
@@ -19,12 +21,12 @@ const MyChats = ({ fetchAgain }) => {
         try {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: `Bearer ${getItemFromCookie(ACCESSTOKEN)}`,
                 },
             };
-
             const { data } = await axios.get(
-                "http://localhost:4000/api/chat",
+                // "http://localhost:4000/api/chat",
+                "http://localhost:5000/api/chat",
                 config
             );
             setChats(data);

@@ -37,7 +37,9 @@ const Signup = () => {
                 },
             };
             const { data } = await axios.post(
-                "http://localhost:4000/api/user/signup",
+                "http://localhost:5000/api/user/signup",
+                // "http://localhost:4000/api/user/signup",
+
                 {
                     name,
                     email,
@@ -56,9 +58,10 @@ const Signup = () => {
             localStorage.setItem("userInfo", JSON.stringify(data));
             // history.push("/chats");
         } catch (error) {
+            console.log(error);
             toast({
                 title: "Error Occured!",
-                description: error.response.data.message,
+                description: error.message,
                 status: "error",
                 duration: 5000,
                 isClosable: true,

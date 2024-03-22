@@ -13,11 +13,17 @@ import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 import ProfileModal from "./miscellaneous/ProfileModal";
-const ENDPOINT = "http://localhost:5173";
+import { getItemFromCookie } from "../shared/helpers/utils";
+import { ACCESSTOKEN } from "../shared/helpers/constant";
+// const ENDPOINT = "http://localhost:5173";
+const ENDPOINT = "http://127.0.0.1:5173";
+
 var socket, selectedChatCompare;
 
 // eslint-disable-next-line react/prop-types
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+    const token = getItemFromCookie(ACCESSTOKEN);
+
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [newMessage, setNewMessage] = useState("");
@@ -48,7 +54,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         try {
             const config = {
                 headers: {
-                    Authorization: `Bearer ${user.token}`,
+                    Authorization: "Bearer " + token,
                 },
             };
 
@@ -81,7 +87,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 const config = {
                     headers: {
                         "Content-type": "application/json",
-                        Authorization: `Bearer ${user.token}`,
+                        Authorization: "Bearer " + token,
                     },
                 };
                 setNewMessage("");

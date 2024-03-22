@@ -17,7 +17,9 @@ const useLogin = () => {
                 `${response?.data?.data?.refreshToken}`
             );
 
-            navigate("/dashboard");
+            // localStorage.setItem("userInfo", JSON.stringify(data));
+
+            navigate("/chatpage");
             return response;
         },
         onError: (error) => {

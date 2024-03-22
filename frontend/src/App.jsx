@@ -8,36 +8,36 @@ import { useEffect } from "react";
 import withAuthentication from "./shared/components/auth/withAuthentication";
 import withoutAuthentication from "./shared/components/auth/withoutAuthentication";
 import Home from "./Home";
-import Login from "../src/components/Authentication/Login";
+import Login from "../src/modules/components/Login";
 
 function App() {
     const UnAuthenticated = () => <Outlet />;
-    useEffect(() => {
-        const fetchData = async () => {
-            const refreshToken = getItemFromCookie(REFRESHTOKEN);
-            if (refreshToken) {
-                try {
-                    const data = await rereshToken(refreshToken);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const refreshToken = getItemFromCookie(REFRESHTOKEN);
+    //         if (refreshToken) {
+    //             try {
+    //                 const data = await rereshToken(refreshToken);
 
-                    setItemInCookie(
-                        ACCESSTOKEN,
-                        `${data?.data?.data?.accessToken}`
-                    );
-                } catch (error) {
-                    console.error("Error refreshing token:", error);
-                }
-            }
-        };
+    //                 setItemInCookie(
+    //                     ACCESSTOKEN,
+    //                     `${data?.data?.data?.accessToken}`
+    //                 );
+    //             } catch (error) {
+    //                 console.error("Error refreshing token:", error);
+    //             }
+    //         }
+    //     };
 
-        const refreshTokenFromCookie = getItemFromCookie(REFRESHTOKEN);
+    //     const refreshTokenFromCookie = getItemFromCookie(REFRESHTOKEN);
 
-        if (refreshTokenFromCookie) {
-            const delayInMilliseconds = 10 * 60 * 60 * 1000;
-            setTimeout(() => {
-                fetchData();
-            }, delayInMilliseconds);
-        }
-    }, []);
+    //     if (refreshTokenFromCookie) {
+    //         const delayInMilliseconds = 10 * 60 * 60 * 1000;
+    //         setTimeout(() => {
+    //             fetchData();
+    //         }, delayInMilliseconds);
+    //     }
+    // }, []);
     return (
         <div className="App">
             <Routes>
