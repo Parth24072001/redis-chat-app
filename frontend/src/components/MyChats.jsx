@@ -53,6 +53,7 @@ const MyChats = ({ fetchAgain }) => {
         <Box
             d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
             flexDir="column"
+            height={"100%"}
             alignItems="center"
             p={3}
             bg="white"

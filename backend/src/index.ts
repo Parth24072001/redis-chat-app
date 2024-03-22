@@ -29,7 +29,7 @@ server.listen(PORT, () => {
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:4000",
+    origin: "http://localhost:5173",
   },
 });
 

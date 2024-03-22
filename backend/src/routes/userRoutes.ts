@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.route("/").post(protect, allUsers);
 
-router.route("/").post(registerUser);
+router.route("/signup").post(registerUser);
 
 // Authenticate User
 router.post("/login", authUser);
