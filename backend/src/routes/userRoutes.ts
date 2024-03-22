@@ -4,12 +4,12 @@ import {
   authUser,
   allUsers,
 } from "../controllers/userControllers";
-import { protect } from "../middleware/authMiddleware";
+import { verifyJWT } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.route("/").post(protect, allUsers);
-router.route("/").get(protect, allUsers);
+router.route("/").post(verifyJWT, allUsers);
+router.route("/").get(verifyJWT, allUsers);
 
 router.route("/signup").post(registerUser);
 

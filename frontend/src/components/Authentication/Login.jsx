@@ -1,10 +1,15 @@
 import { useState } from "react";
-import axios from "axios";
-import { useQueryClient } from "@tanstack/react-query";
+// import axios from "axios";
+// import { useQueryClient } from "@tanstack/react-query";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { setItemInCookie } from "../../shared/helpers/utils";
+import { useNavigate } from "react-router-dom";
+import api from "../../shared/api/apiinetrcepter";
 
 const Login = () => {
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
+    const navigate = useNavigate();
+
     const [loading, setLoading] = useState(false);
 
     const initialValues = {
@@ -15,13 +20,20 @@ const Login = () => {
     const handleLogin = async (values) => {
         setLoading(true);
         try {
-            const { data } = await axios.post(
-                "http://localhost:4000/api/user/login", // Adjusted URL
-                values
-            );
+            // const { data } = await axios.post(
+            //     "http://localhost:4000/api/user/login",
+            //     values
+            // );
+
+            const { data } = await api.post(`user/login`, values);
+
             localStorage.setItem("userInfo", JSON.stringify(data));
-            queryClient.setQueryData("userInfo", data);
+            // queryClient.setQueryData("userInfo", data);
             setLoading(false);
+            setItemInCookie("accessToken", `${data?.data?.accessToken}`);
+            setItemInCookie("refreshToken", `${data?.data?.refreshToken}`);
+            console.log("sadgyg");
+            navigate("/chatpage");
         } catch (error) {
             console.error("Login Error:", error);
             setLoading(false);

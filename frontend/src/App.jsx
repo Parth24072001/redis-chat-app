@@ -1,13 +1,14 @@
 import "./App.css";
-import Homepage from "./Pages/Homepage";
+// import Homepage from "./Pages/Homepage";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import Chatpage from "./Pages/Chatpage";
 import { getItemFromCookie, setItemInCookie } from "./shared/helpers/utils";
 import { ACCESSTOKEN, REFRESHTOKEN } from "./shared/helpers/constant";
 import { rereshToken } from "./shared/api";
 import { useEffect } from "react";
 import withAuthentication from "./shared/components/auth/withAuthentication";
 import withoutAuthentication from "./shared/components/auth/withoutAuthentication";
+import Home from "./Home";
+import Login from "../src/components/Authentication/Login";
 
 function App() {
     const UnAuthenticated = () => <Outlet />;
@@ -39,17 +40,12 @@ function App() {
     }, []);
     return (
         <div className="App">
-            {/* <Route path="/" index element={<Homepage />} /> */}
-
             <Routes>
-                <Route path="/*" element={withAuthentication(Chatpage)}>
+                <Route path="/*" element={withAuthentication(Home)}>
                     <Route index element={<Navigate to={"/"} />} />
                 </Route>
                 <Route path="" element={withoutAuthentication(UnAuthenticated)}>
-                    {/* <Route path="/chats" element={<Chatpage />} /> */}
-
-                    <Route path="/" index element={<Homepage />} />
-                    {/* <Route path="signup" index element={<Signup />} /> */}
+                    <Route path="login" index element={<Login />} />
                 </Route>
             </Routes>
         </div>

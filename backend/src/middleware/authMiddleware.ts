@@ -1,39 +1,63 @@
-import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { asyncHandler } from "../config/asyncHandler";
+import { ApiError } from "../config/ApiError";
 import { User } from "../models/userModel";
-import asyncHandler from "express-async-handler";
 
-const protect = asyncHandler(async (req: any, res: any, next: NextFunction) => {
-  let token: any;
-
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
-      token = req.headers.authorization.split(" ")[1];
-
-      //decodes token id
-      const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-
-      req.user = await User.findById(decoded.id).select("-password");
-
-      if (!req.user) {
-        res.status(404);
-        throw new Error("User not found");
-      }
-
-      next();
-    } catch (error) {
-      res.status(401);
-      throw new Error("Not authorized, token failed");
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JwtPayload;
     }
   }
+}
+export const verifyJWT = asyncHandler(async (req, res, next) => {
+  try {
+    const token =
+      req.cookies?.accessToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
+    if (!token) {
+      throw new ApiError(401, "Unauthorized request");
+    }
 
-  if (!token) {
-    res.status(401);
-    throw new Error("Not authorized, no token");
+    if (!process.env.ACCESS_TOKEN_SECRET) {
+      throw new Error("ACCESS_TOKEN_SECRET is not defined");
+    }
+
+    // Verify and decode the JWT token
+    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    // Check if the decoded token contains the necessary user ID (_id)
+    if (
+      !decodedToken ||
+      typeof decodedToken !== "object" ||
+      !decodedToken._id
+    ) {
+      throw new ApiError(401, "Invalid Access Token");
+    }
+
+    // Retrieve user information based on the user ID from the token
+    const user = await User.findById(decodedToken._id).select(
+      "-password -refreshToken"
+    );
+
+    // Check if the user exists
+    if (!user) {
+      throw new ApiError(401, "User not found");
+    }
+
+    // Assign the user information to the request object
+    req.user = user;
+
+    // Call the next middleware
+    next();
+  } catch (error: any) {
+    // Handle decoding errors gracefully
+    if (error.name === "JsonWebTokenError") {
+      throw new ApiError(401, "Invalid access token");
+    } else if (error.name === "TokenExpiredError") {
+      throw new ApiError(401, "Access token expired");
+    } else {
+      throw new ApiError(401, error.message || "Invalid access token");
+    }
   }
 });
-
-export { protect };

@@ -1,14 +1,15 @@
 import axios from "axios";
 import { getItemFromCookie, removeItemInCookie } from "../helpers/utils";
+import { ACCESSTOKEN } from "../helpers/constant";
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_APIURL,
+    baseURL: "http://localhost:4000/api/",
     headers: { "Content-type": "application/json" },
 });
 
 api.interceptors.request.use(
     async (config) => {
-        const accessToken = getItemFromCookie("accessToken");
+        const accessToken = getItemFromCookie(ACCESSTOKEN);
 
         if (accessToken) {
             config.headers["Authorization"] = "Bearer " + accessToken;
@@ -29,20 +30,11 @@ api.interceptors.response.use(
             removeItemInCookie("accessToken");
             removeItemInCookie("refreshToken");
 
+            // Redirect to login page
             window.location.replace("/login");
         }
 
-        const sentryError = {
-            url: `${error.config?.baseURL}${error.config?.url}`,
-            message: error.response?.data.message || error.message,
-            status: error.response?.status || error.status || "",
-            payload: error.config?.data,
-        };
-
-        if (typeof sentryError.payload === "string") {
-            sentryError.payload = JSON.parse(sentryError.payload);
-        }
-
+        // Forward the error for further processing
         return Promise.reject(error);
     }
 );
