@@ -1,23 +1,7 @@
-import { Stack } from "@chakra-ui/layout";
-import { Skeleton } from "@chakra-ui/skeleton";
-
 const ChatLoading = () => {
-  return (
-    <Stack>
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-      <Skeleton height="45px" />
-    </Stack>
-  );
+    return (
+        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-20 w-20"></div>
+    );
 };
 
 export default ChatLoading;

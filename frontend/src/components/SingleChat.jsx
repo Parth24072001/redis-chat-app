@@ -1,6 +1,5 @@
 import { FormControl } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
-import { Box, Text } from "@chakra-ui/layout";
+
 import "./styles.css";
 import { IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
@@ -9,7 +8,6 @@ import axios from "axios";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import ScrollableChat from "./ScrollableChat";
 import Lottie from "react-lottie";
-import animationData from "../animations/typing.json";
 
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
@@ -18,6 +16,7 @@ import ProfileModal from "./miscellaneous/ProfileModal";
 const ENDPOINT = "http://localhost:5173";
 var socket, selectedChatCompare;
 
+// eslint-disable-next-line react/prop-types
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -30,7 +29,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const defaultOptions = {
         loop: true,
         autoplay: true,
-        animationData: animationData,
+
         rendererSettings: {
             preserveAspectRatio: "xMidYMid slice",
         },
@@ -167,16 +166,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         <>
             {selectedChat ? (
                 <>
-                    <Text
-                        fontSize={{ base: "28px", md: "30px" }}
-                        pb={3}
-                        px={2}
-                        w="100%"
-                        fontFamily="Work sans"
-                        d="flex"
-                        justifyContent={{ base: "space-between" }}
-                        alignItems="center"
-                    >
+                    <text className="text-base md:text-lg pb-3 px-2 w-full font-work-sans flex justify-between items-center">
                         <IconButton
                             d={{ base: "flex", md: "none" }}
                             icon={<ArrowBackIcon />}
@@ -203,18 +193,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                                     />
                                 </>
                             ))}
-                    </Text>
-                    <Box
-                        d="flex"
-                        flexDir="column"
-                        justifyContent="flex-end"
-                        p={3}
-                        bg="#E8E8E8"
-                        w="100%"
-                        h="100%"
-                        borderRadius="lg"
-                        overflowY="hidden"
-                    >
+                    </text>
+                    <div className="flex flex-col justify-end p-3 bg-gray-200 w-full h-full rounded-lg overflow-hidden">
                         {loading ? (
                             <Spinner
                                 size="xl"
@@ -250,28 +230,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                             ) : (
                                 <></>
                             )}
-                            <Input
-                                variant="filled"
-                                bg="#E0E0E0"
+                            <input
+                                className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
                                 placeholder="Enter a message.."
                                 value={newMessage}
                                 onChange={typingHandler}
                             />
                         </FormControl>
-                    </Box>
+                    </div>
                 </>
             ) : (
                 // to get socket.io on same page
-                <Box
-                    d="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    h="100%"
-                >
-                    <Text fontSize="3xl" pb={3} fontFamily="Work sans">
+                <div className=" flex justify-center items-center h-full">
+                    <text className=" pb-3">
                         Click on a user to start chatting
-                    </Text>
-                </Box>
+                    </text>
+                </div>
             )}
         </>
     );

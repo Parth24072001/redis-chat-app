@@ -1,19 +1,16 @@
-import { AddIcon } from "@chakra-ui/icons";
-import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
-import { Button } from "@chakra-ui/react";
 import { ChatState } from "../Context/ChatProvider";
 
+// eslint-disable-next-line react/prop-types
 const MyChats = ({ fetchAgain }) => {
     const [loggedUser, setLoggedUser] = useState();
 
-    const { selectedChat, setSelectedChat, user, chats, setChats } =
-        ChatState();
+    const { setSelectedChat, user, chats, setChats } = ChatState();
 
     const toast = useToast();
 
@@ -50,74 +47,29 @@ const MyChats = ({ fetchAgain }) => {
     }, [fetchAgain]);
 
     return (
-        <Box
-            d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
-            flexDir="column"
-            height={"100%"}
-            alignItems="center"
-            p={3}
-            bg="white"
-            w={{ base: "100%", md: "31%" }}
-            borderRadius="lg"
-            borderWidth="1px"
-        >
-            <Box
-                pb={3}
-                px={3}
-                fontSize={{ base: "28px", md: "30px" }}
-                fontFamily="Work sans"
-                d="flex"
-                w="100%"
-                justifyContent="space-between"
-                alignItems="center"
-            >
+        <div className="flex md:flex flex-col items-center p-3 bg-white w-full md:w-1/3 h-full rounded-lg border-1">
+            <div className="pb-3 px-3 text-lg md:text-xl font-work-sans flex justify-between items-center w-full">
                 My Chats
                 <GroupChatModal>
-                    <Button
-                        d="flex"
-                        fontSize={{ base: "17px", md: "10px", lg: "17px" }}
-                        rightIcon={<AddIcon />}
-                    >
-                        New Group Chat
-                    </Button>
+                    <button>New Group Chat</button>
                 </GroupChatModal>
-            </Box>
-            <Box
-                d="flex"
-                flexDir="column"
-                p={3}
-                bg="#F8F8F8"
-                w="100%"
-                h="100%"
-                borderRadius="lg"
-                overflowY="hidden"
-            >
+            </div>
+            <div className="flex flex-col p-3 bg-gray-200 w-full h-full rounded-lg overflow-hidden">
                 {chats ? (
-                    <Stack overflowY="scroll">
+                    <div className=" overflow-y-scroll">
                         {chats?.map((chat) => (
-                            <Box
+                            <div
                                 onClick={() => setSelectedChat(chat)}
-                                cursor="pointer"
-                                bg={
-                                    selectedChat === chat
-                                        ? "#38B2AC"
-                                        : "#E8E8E8"
-                                }
-                                color={
-                                    selectedChat === chat ? "white" : "black"
-                                }
-                                px={3}
-                                py={2}
-                                borderRadius="lg"
-                                key={chat._id}
+                                className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg"
+                                key={chat}
                             >
-                                <Text>
+                                <text>
                                     {!chat.isGroupChat
                                         ? getSender(loggedUser, chat.users)
                                         : chat.chatName}
-                                </Text>
+                                </text>
                                 {chat.latestMessage && (
-                                    <Text fontSize="xs">
+                                    <text>
                                         <b>
                                             {chat.latestMessage.sender.name} :{" "}
                                         </b>
@@ -127,16 +79,16 @@ const MyChats = ({ fetchAgain }) => {
                                                   51
                                               ) + "..."
                                             : chat.latestMessage.content}
-                                    </Text>
+                                    </text>
                                 )}
-                            </Box>
+                            </div>
                         ))}
-                    </Stack>
+                    </div>
                 ) : (
                     <ChatLoading />
                 )}
-            </Box>
-        </Box>
+            </div>
+        </div>
     );
 };
 
