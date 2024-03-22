@@ -1,5 +1,7 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcryptjs";
+
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 interface IUser extends Document {
   name: string;
   email: string;
@@ -8,6 +10,7 @@ interface IUser extends Document {
   isAdmin: boolean;
   matchPassword: (enteredPassword: string) => Promise<boolean>;
 }
+
 const userSchema = new Schema<IUser>(
   {
     name: {
@@ -35,6 +38,10 @@ const userSchema = new Schema<IUser>(
       required: true,
       default: false,
     },
+
+    refreshToken: {
+      type: String,
+    },
   },
   {
     collection: "users",
@@ -42,17 +49,49 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-userSchema.pre<any>("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
+userSchema.methods.isPasswordCorrect = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+userSchema.methods.generateAccessToken = function () {
+  if (!process.env.ACCESS_TOKEN_SECRET || !process.env.ACCESS_TOKEN_EXPIRY) {
+    throw new Error(
+      "ACCESS_TOKEN_SECRET or ACCESS_TOKEN_EXPIRY is not defined"
+    );
   }
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-});
+  return jwt.sign(
+    {
+      _id: this._id,
+      email: this.email,
+      name: this.name,
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+    }
+  );
+};
+
+userSchema.methods.generateRefreshToken = function () {
+  if (!process.env.REFRESH_TOKEN_SECRET || !process.env.REFRESH_TOKEN_EXPIRY) {
+    throw new Error(
+      "REFRESH_TOKEN_SECRET or REFRESH_TOKEN_EXPIRY is not defined"
+    );
+  }
+
+  return jwt.sign(
+    {
+      _id: this._id,
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+    }
+  );
+};
 
 userSchema.methods.matchPassword = async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-
 export const User = mongoose.model("User", userSchema);

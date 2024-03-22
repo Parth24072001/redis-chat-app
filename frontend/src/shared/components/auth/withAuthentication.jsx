@@ -6,7 +6,7 @@ const withAuthentication = (WarpedComponent) => {
         if (getItemFromCookie("accessToken")) {
             return <WarpedComponent {...props} />;
         }
-        return <Navigate to="login" />;
+        return <Navigate to="/" />;
     };
 
     return <Component />;
