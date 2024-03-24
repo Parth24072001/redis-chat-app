@@ -17,7 +17,10 @@ const useLogin = () => {
                 `${response?.data?.data?.refreshToken}`
             );
 
-            // localStorage.setItem("userInfo", JSON.stringify(data));
+            localStorage.setItem(
+                "userInfo",
+                JSON.stringify(response.data?.data?.user)
+            );
 
             navigate("/chatpage");
             return response;

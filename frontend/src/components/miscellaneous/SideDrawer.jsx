@@ -30,6 +30,7 @@ import ProfileModal from "./ProfileModal";
 import { getSender } from "../../config/ChatLogics";
 import UserListItem from "../userAvatar/UserListItem";
 import { ChatState } from "../../Context/ChatProvider";
+import { ChatWithId, SearchUser } from "../../modules/api";
 
 function SideDrawer() {
     const [search, setSearch] = useState("");
@@ -48,11 +49,9 @@ function SideDrawer() {
 
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    // const history = useHistory();
 
     const logoutHandler = () => {
         localStorage.removeItem("userInfo");
-        // history.push("/");
     };
 
     const handleSearch = async () => {
@@ -70,17 +69,8 @@ function SideDrawer() {
         try {
             setLoading(true);
 
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-
-            const { data } = await axios.get(
-                `http://localhost:4000/api/user?search=${search}`,
-                config
-            );
-
+            const { data } = await SearchUser(search);
+            console.log(data);
             setLoading(false);
             setSearchResult(data);
         } catch (error) {
@@ -96,21 +86,10 @@ function SideDrawer() {
     };
 
     const accessChat = async (userId) => {
-        console.log(userId);
-
         try {
             setLoadingChat(true);
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${user.token}`,
-                },
-            };
-            const { data } = await axios.post(
-                `http://localhost:4000/api/chat`,
-                { userId },
-                config
-            );
+
+            const { data } = await ChatWithId({ userId });
 
             if (!chats.find((c) => c._id === data._id))
                 setChats([data, ...chats]);

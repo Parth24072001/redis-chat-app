@@ -1,34 +1,23 @@
 import { useToast } from "@chakra-ui/toast";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
-import { getItemFromCookie } from "../shared/helpers/utils";
-import { ACCESSTOKEN } from "../shared/helpers/constant";
+
+import { Chat } from "../modules/api";
 
 // eslint-disable-next-line react/prop-types
 const MyChats = ({ fetchAgain }) => {
     const [loggedUser, setLoggedUser] = useState();
 
-    const { setSelectedChat, user, chats, setChats } = ChatState();
+    const { setSelectedChat, chats, setChats } = ChatState();
 
     const toast = useToast();
 
     const fetchChats = async () => {
-        // console.log(user._id);
         try {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${getItemFromCookie(ACCESSTOKEN)}`,
-                },
-            };
-            const { data } = await axios.get(
-                // "http://localhost:4000/api/chat",
-                "http://localhost:5000/api/chat",
-                config
-            );
+            const { data } = await Chat();
             setChats(data);
         } catch (error) {
             toast({

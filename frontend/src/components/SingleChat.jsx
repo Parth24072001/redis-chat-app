@@ -15,6 +15,7 @@ import { ChatState } from "../Context/ChatProvider";
 import ProfileModal from "./miscellaneous/ProfileModal";
 import { getItemFromCookie } from "../shared/helpers/utils";
 import { ACCESSTOKEN } from "../shared/helpers/constant";
+import { MessageWithUser, MessageWithUserId } from "../modules/api";
 // const ENDPOINT = "http://localhost:5173";
 const ENDPOINT = "http://127.0.0.1:5173";
 
@@ -52,18 +53,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         if (!selectedChat) return;
 
         try {
-            const config = {
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-            };
-
             setLoading(true);
 
-            const { data } = await axios.get(
-                `http://localhost:4000/api/message/${selectedChat._id}`,
-                config
-            );
+            // const { data } = await axios.get(
+            //     `http://localhost:4000/api/message/${selectedChat._id}`,
+            //     config
+            // );
+
+            const { data } = await MessageWithUserId(selectedChat._id);
+
             setMessages(data);
             setLoading(false);
 
@@ -91,14 +89,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     },
                 };
                 setNewMessage("");
-                const { data } = await axios.post(
-                    "http://localhost:4000/api/message",
-                    {
-                        content: newMessage,
-                        chatId: selectedChat,
-                    },
-                    config
-                );
+
+                const { data } = await MessageWithUser({
+                    content: newMessage,
+                    chatId: selectedChat,
+                });
                 socket.emit("new message", data);
                 setMessages([...messages, data]);
             } catch (error) {

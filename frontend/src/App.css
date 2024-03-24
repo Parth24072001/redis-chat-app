@@ -9,6 +9,7 @@
   background-image: url("./background.png");
   background-position: center;
   background-size: cover;
+  @apply justify-center ;
 }
 
 ::-webkit-scrollbar {

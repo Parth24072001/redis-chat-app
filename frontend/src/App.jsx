@@ -9,6 +9,7 @@ import withAuthentication from "./shared/components/auth/withAuthentication";
 import withoutAuthentication from "./shared/components/auth/withoutAuthentication";
 import Home from "./Home";
 import Login from "../src/modules/components/Login";
+import Signup from "../src/modules/components/Signup";
 
 function App() {
     const UnAuthenticated = () => <Outlet />;
@@ -46,6 +47,7 @@ function App() {
                 </Route>
                 <Route path="" element={withoutAuthentication(UnAuthenticated)}>
                     <Route path="login" index element={<Login />} />
+                    <Route path="/signup" index element={<Signup />} />
                 </Route>
             </Routes>
         </div>

@@ -18,7 +18,6 @@ import {
 // eslint-disable-next-line react/prop-types
 const ProfileModal = ({ user, children }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-
     return (
         <>
             {children ? (
