@@ -4,7 +4,7 @@ import "./styles.css";
 import { IconButton, Spinner, useToast } from "@chakra-ui/react";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import ScrollableChat from "./ScrollableChat";
 import Lottie from "react-lottie";
@@ -13,18 +13,13 @@ import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 import ProfileModal from "./miscellaneous/ProfileModal";
-import { getItemFromCookie } from "../shared/helpers/utils";
-import { ACCESSTOKEN } from "../shared/helpers/constant";
+
 import { MessageWithUser, MessageWithUserId } from "../modules/api";
-// const ENDPOINT = "http://localhost:5173";
-const ENDPOINT = "http://127.0.0.1:5173";
 
 var socket, selectedChatCompare;
 
 // eslint-disable-next-line react/prop-types
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
-    const token = getItemFromCookie(ACCESSTOKEN);
-
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [newMessage, setNewMessage] = useState("");
@@ -82,12 +77,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         if (event.key === "Enter" && newMessage) {
             socket.emit("stop typing", selectedChat._id);
             try {
-                const config = {
-                    headers: {
-                        "Content-type": "application/json",
-                        Authorization: "Bearer " + token,
-                    },
-                };
                 setNewMessage("");
 
                 const { data } = await MessageWithUser({
@@ -110,7 +99,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     };
 
     useEffect(() => {
-        socket = io(ENDPOINT);
+        socket = io(import.meta.env.VITE_ENDPOINT);
         socket.emit("setup", user);
         socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setIsTyping(true));

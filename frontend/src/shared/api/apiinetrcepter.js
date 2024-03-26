@@ -3,7 +3,7 @@ import { getItemFromCookie, removeItemInCookie } from "../helpers/utils";
 import { ACCESSTOKEN } from "../helpers/constant";
 
 const api = axios.create({
-    baseURL: "http://localhost:5000/api/",
+    baseURL: import.meta.env.VITE_APIENDPOINT,
     headers: { "Content-type": "application/json" },
 });
 

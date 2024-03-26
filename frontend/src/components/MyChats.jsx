@@ -6,6 +6,7 @@ import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 
 import { Chat } from "../modules/api";
+import { isArray } from "lodash";
 
 // eslint-disable-next-line react/prop-types
 const MyChats = ({ fetchAgain }) => {
@@ -48,32 +49,35 @@ const MyChats = ({ fetchAgain }) => {
             <div className="flex flex-col p-3 bg-gray-200 w-full h-full rounded-lg overflow-hidden">
                 {chats ? (
                     <div className=" overflow-y-scroll">
-                        {chats?.map((chat) => (
-                            <div
-                                onClick={() => setSelectedChat(chat)}
-                                className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg"
-                                key={chat}
-                            >
-                                <text>
-                                    {!chat.isGroupChat
-                                        ? getSender(loggedUser, chat.users)
-                                        : chat.chatName}
-                                </text>
-                                {chat.latestMessage && (
+                        {isArray(chats) &&
+                            chats?.map((chat) => (
+                                <div
+                                    onClick={() => setSelectedChat(chat)}
+                                    className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg"
+                                    key={chat}
+                                >
                                     <text>
-                                        <b>
-                                            {chat.latestMessage.sender.name} :{" "}
-                                        </b>
-                                        {chat.latestMessage.content.length > 50
-                                            ? chat.latestMessage.content.substring(
-                                                  0,
-                                                  51
-                                              ) + "..."
-                                            : chat.latestMessage.content}
+                                        {!chat.isGroupChat
+                                            ? getSender(loggedUser, chat.users)
+                                            : chat.chatName}
                                     </text>
-                                )}
-                            </div>
-                        ))}
+                                    {chat.latestMessage && (
+                                        <text>
+                                            <b>
+                                                {chat.latestMessage.sender.name}{" "}
+                                                :{" "}
+                                            </b>
+                                            {chat.latestMessage.content.length >
+                                            50
+                                                ? chat.latestMessage.content.substring(
+                                                      0,
+                                                      51
+                                                  ) + "..."
+                                                : chat.latestMessage.content}
+                                        </text>
+                                    )}
+                                </div>
+                            ))}
                     </div>
                 ) : (
                     <ChatLoading />

@@ -91,7 +91,7 @@ function SideDrawer() {
 
             const { data } = await ChatWithId({ userId });
 
-            if (!chats.find((c) => c._id === data._id))
+            if (!chats?.find((c) => c._id === data._id))
                 setChats([data, ...chats]);
             setSelectedChat(data);
             setLoadingChat(false);

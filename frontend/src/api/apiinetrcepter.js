@@ -2,7 +2,7 @@ import axios from "axios";
 import { getItemFromCookie, removeItemInCookie } from "../shared/helpers/utils";
 
 const api = axios.create({
-    baseURL: "http://localhost:5000/api/",
+    baseURL: import.meta.env.VITE_APIENDPOINT,
     headers: { "Content-type": "application/json" },
 });
 
