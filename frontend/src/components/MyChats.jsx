@@ -1,4 +1,5 @@
-import { useToast } from "@chakra-ui/toast";
+/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
@@ -9,33 +10,22 @@ import { Chat } from "../modules/api";
 import { isArray } from "lodash";
 import { useUser } from "../Context/userProvider";
 
-// eslint-disable-next-line react/prop-types
 const MyChats = ({ fetchAgain }) => {
     const { user } = useUser();
 
     const { setSelectedChat, chats, setChats } = ChatState();
-
-    const toast = useToast();
 
     const fetchChats = async () => {
         try {
             const { data } = await Chat();
             setChats(data);
         } catch (error) {
-            toast({
-                title: "Error Occured!",
-                description: "Failed to Load the chats",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom-left",
-            });
+            console.log(error);
         }
     };
 
     useEffect(() => {
         fetchChats();
-        // eslint-disable-next-line
     }, [fetchAgain]);
 
     return (

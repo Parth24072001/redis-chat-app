@@ -1,30 +1,13 @@
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.App {
-  min-height: 100vh;
-  display: flex;
-  background-image: url("./background.png");
-  background-position: center;
-  background-size: cover;
-  @apply justify-center ;
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-::-webkit-scrollbar {
-  width: 0px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(136, 136, 136, 0.281);
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-.chatbox{
-  height: calc(100vh - 64px);
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
