@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/toast";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
@@ -7,10 +7,11 @@ import { ChatState } from "../Context/ChatProvider";
 
 import { Chat } from "../modules/api";
 import { isArray } from "lodash";
+import { useUser } from "../Context/userProvider";
 
 // eslint-disable-next-line react/prop-types
 const MyChats = ({ fetchAgain }) => {
-    const [loggedUser, setLoggedUser] = useState();
+    const { user } = useUser();
 
     const { setSelectedChat, chats, setChats } = ChatState();
 
@@ -33,7 +34,6 @@ const MyChats = ({ fetchAgain }) => {
     };
 
     useEffect(() => {
-        setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
         fetchChats();
         // eslint-disable-next-line
     }, [fetchAgain]);
@@ -58,7 +58,10 @@ const MyChats = ({ fetchAgain }) => {
                                 >
                                     <text>
                                         {!chat.isGroupChat
-                                            ? getSender(loggedUser, chat.users)
+                                            ? getSender(
+                                                  user?.currentUser,
+                                                  chat.users
+                                              )
                                             : chat.chatName}
                                     </text>
                                     {chat.latestMessage && (

@@ -20,6 +20,16 @@ export const GroupChat = (data) => {
 export const SearchUser = (search) => {
     return api.post(`user?search=${search}`);
 };
+export const ChatreName = (data) => {
+    return api.put(`chat/rename`, data);
+};
+
+export const GroupAdd = (data) => {
+    return api.put(`chat/groupadd`, data);
+};
+export const GroupRemove = (data) => {
+    return api.put(`chat/groupremove`, data);
+};
 
 export const ChatWithId = (id) => {
     return api.post(`chat`, id);

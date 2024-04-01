@@ -21,22 +21,24 @@ import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Avatar } from "@chakra-ui/avatar";
 // import { useHistory } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import { useToast } from "@chakra-ui/toast";
 import ChatLoading from "../ChatLoading";
 import { Spinner } from "@chakra-ui/spinner";
 import ProfileModal from "./ProfileModal";
-
 import { getSender } from "../../config/ChatLogics";
 import UserListItem from "../userAvatar/UserListItem";
 import { ChatState } from "../../Context/ChatProvider";
 import { ChatWithId, SearchUser } from "../../modules/api";
+import { removeItemInCookie } from "../../shared/helpers/utils";
+import { useNavigate } from "react-router-dom";
 
 function SideDrawer() {
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingChat, setLoadingChat] = useState(false);
+
+    const navigate = useNavigate();
 
     const {
         setSelectedChat,
@@ -51,7 +53,9 @@ function SideDrawer() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const logoutHandler = () => {
-        localStorage.removeItem("userInfo");
+        removeItemInCookie("accessToken");
+        removeItemInCookie("refreshToken");
+        navigate("/login");
     };
 
     const handleSearch = async () => {

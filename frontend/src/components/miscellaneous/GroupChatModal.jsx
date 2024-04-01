@@ -14,7 +14,6 @@ import {
     useToast,
     Box,
 } from "@chakra-ui/react";
-import axios from "axios";
 import { useState } from "react";
 import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
@@ -30,7 +29,7 @@ const GroupChatModal = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const toast = useToast();
 
-    const { user, chats, setChats } = ChatState();
+    const { chats, setChats } = ChatState();
 
     const handleGroup = (userToAdd) => {
         if (selectedUsers.includes(userToAdd)) {
@@ -79,17 +78,6 @@ const GroupChatModal = ({ children }) => {
     };
 
     const handleSubmit = async () => {
-        if (!groupChatName || !selectedUsers) {
-            toast({
-                title: "Please fill all the feilds",
-                status: "warning",
-                duration: 5000,
-                isClosable: true,
-                position: "top",
-            });
-            return;
-        }
-
         try {
             const { data } = await GroupChat({
                 name: groupChatName,
@@ -97,22 +85,8 @@ const GroupChatModal = ({ children }) => {
             });
             setChats([data, ...chats]);
             onClose();
-            toast({
-                title: "New Group Chat Created!",
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom",
-            });
         } catch (error) {
-            toast({
-                title: "Failed to Create the Chat!",
-                description: error.response.data,
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom",
-            });
+            console.log(error);
         }
     };
 

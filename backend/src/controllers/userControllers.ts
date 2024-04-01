@@ -13,7 +13,7 @@ const allUsers = asyncHandler(async (req: any, res: any, next: any) => {
         ],
       }
     : {};
-  console.log(keyword);
+
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
   res.send(users);
 });
@@ -175,10 +175,47 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
+const getCurrentUser = asyncHandler(async (req, res) => {
+  try {
+    const currentUserId = req?.user?.id;
+
+    if (!currentUserId) {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, null, "Current user not found"));
+    }
+
+    // Assuming you have access to the User model
+    const currentUser = await User.findById(currentUserId).exec();
+
+    if (!currentUser) {
+      return res
+        .status(404)
+        .json(new ApiResponse(404, null, "Current user not found"));
+    }
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          currentUser,
+        },
+        "Current user fetched successfully"
+      )
+    );
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json(new ApiResponse(500, null, "Error fetching current user"));
+  }
+});
+
 export {
   allUsers,
   registerUser,
   authUser,
   generateAccessAndRefereshTokens,
   refreshAccessToken,
+  getCurrentUser,
 };

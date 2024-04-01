@@ -1,13 +1,13 @@
 import express from "express";
-import connectDB from "./config/db"; // Update the path as necessary
+import connectDB from "./config/db";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes";
 import chatRoutes from "./routes/chatRoutes";
 import messageRoutes from "./routes/messageRoutes";
 import { notFound, errorHandler } from "./middleware/errorMiddleware";
 import cors from "cors";
-import http from "http"; // Import http module for creating the server
-import { Server } from "socket.io"; // Import Server class from socket.io
+import http from "http";
+import { Server } from "socket.io";
 
 dotenv.config({ path: "./.env" });
 connectDB();
@@ -29,7 +29,7 @@ server.listen(PORT, () => {
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://127.0.0.1:5173",
+    origin: "http://localhost:5173",
   },
 });
 
@@ -44,4 +44,4 @@ app.use("/api/message", messageRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-export { app, server }; // Exporting server as well for testing purposes
+export { app, server };
