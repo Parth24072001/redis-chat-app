@@ -1,4 +1,6 @@
 import "./App.css";
+
+import "../src/common.css";
 // import Homepage from "./Pages/Homepage";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 
@@ -37,7 +39,7 @@ function App() {
     //     }
     // }, []);
     return (
-        <div className="App">
+        <div>
             <Routes>
                 <Route path="/*" element={withAuthentication(Home)}>
                     <Route index element={<Navigate to={"/"} />} />

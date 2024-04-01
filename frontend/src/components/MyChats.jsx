@@ -29,7 +29,7 @@ const MyChats = ({ fetchAgain }) => {
     }, [fetchAgain]);
 
     return (
-        <div className="flex md:flex flex-col items-center p-3 bg-white w-full md:w-1/3 h-full rounded-lg border-1">
+        <div className="flex md:flex flex-col items-center  bg-white w-full  h-full rounded-lg border-1">
             <div className="pb-3 px-3 text-lg md:text-xl font-work-sans flex justify-between items-center w-full">
                 My Chats
                 <GroupChatModal>
@@ -43,23 +43,24 @@ const MyChats = ({ fetchAgain }) => {
                             chats?.map((chat) => (
                                 <div
                                     onClick={() => setSelectedChat(chat)}
-                                    className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg"
+                                    className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg mb-1"
                                     key={chat}
                                 >
-                                    <text>
+                                    <span>
                                         {!chat.isGroupChat
                                             ? getSender(
                                                   user?.currentUser,
                                                   chat.users
                                               )
                                             : chat.chatName}
-                                    </text>
+                                    </span>{" "}
+                                    :{" "}
                                     {chat.latestMessage && (
-                                        <text>
-                                            <b>
+                                        <span>
+                                            {/* <b>
                                                 {chat.latestMessage.sender.name}{" "}
                                                 :{" "}
-                                            </b>
+                                            </b> */}
                                             {chat.latestMessage.content.length >
                                             50
                                                 ? chat.latestMessage.content.substring(
@@ -67,7 +68,7 @@ const MyChats = ({ fetchAgain }) => {
                                                       51
                                                   ) + "..."
                                                 : chat.latestMessage.content}
-                                        </text>
+                                        </span>
                                     )}
                                 </div>
                             ))}

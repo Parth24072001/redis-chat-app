@@ -1,25 +1,37 @@
 import { useState } from "react";
 import Chatbox from "../components/Chatbox";
-import MyChats from "../components/MyChats";
 import SideDrawer from "../components/miscellaneous/SideDrawer";
-import { ChatState } from "../Context/ChatProvider";
+import Header from "../components/miscellaneous/Header";
 
 const Chatpage = () => {
     const [fetchAgain, setFetchAgain] = useState(false);
-    const { user } = ChatState();
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+
     return (
-        <div style={{ width: "100%" }}>
-            {user && <SideDrawer />}
-            <div className="!flex chatbox w-full p-[10px]">
-                {user && <MyChats fetchAgain={fetchAgain} />}
-                {user && (
-                    <Chatbox
+        <>
+            <div className=" flex ">
+                <div className=" fixed inset-y-0 z-50 flex w-[400px] flex-col ">
+                    <SideDrawer
+                        setSidebarOpen={setSidebarOpen}
+                        sidebarOpen={sidebarOpen}
                         fetchAgain={fetchAgain}
-                        setFetchAgain={setFetchAgain}
                     />
-                )}
+                </div>
+                <div className="pl-[400px] w-full   ">
+                    <div className=" border-l border-black">
+                        <Header />
+                        <main className="md:py-[35px] py-[22px] px-4 sm:px-6 lg:px-[30px] chatbox">
+                            <div className="!flex  w-full p-[10px]">
+                                <Chatbox
+                                    fetchAgain={fetchAgain}
+                                    setFetchAgain={setFetchAgain}
+                                />
+                            </div>
+                        </main>
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
