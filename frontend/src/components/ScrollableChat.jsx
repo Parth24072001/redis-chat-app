@@ -1,4 +1,4 @@
-import ScrollableFeed from "react-scrollable-feed";
+/* eslint-disable react/prop-types */
 import {
     isLastMessage,
     isSameSender,
@@ -8,11 +8,10 @@ import {
 
 import { useUser } from "../Context/userProvider";
 
-// eslint-disable-next-line react/prop-types
 const ScrollableChat = ({ messages }) => {
     const { user } = useUser();
     return (
-        <ScrollableFeed>
+        <>
             {messages &&
                 // eslint-disable-next-line react/prop-types
                 messages.map((m, i) => (
@@ -61,7 +60,7 @@ const ScrollableChat = ({ messages }) => {
                         </span>
                     </div>
                 ))}
-        </ScrollableFeed>
+        </>
     );
 };
 

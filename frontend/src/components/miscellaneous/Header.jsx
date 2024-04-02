@@ -39,6 +39,8 @@ const Header = () => {
         navigate("/login");
     };
 
+    console.log(notification);
+
     return (
         <div className="header">
             <div></div>
@@ -53,6 +55,11 @@ const Header = () => {
                     >
                         Notification
                     </button>
+
+                    {/* <NotificationBadge
+                        count={notification.length}
+                        effect={Effect.SCALE}
+                    /> */}
                     {activeModal?.notificationModal === true && (
                         <ul className=" absolute top-1 right-0 transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6 !w-[300px]">
                             {!notification.length && "No New Messages"}

@@ -45,6 +45,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     const sendMessage = async (event) => {
         if (event.key === "Enter" && newMessage) {
+            event.preventDefault();
             socket.emit("stop typing", selectedChat._id);
             try {
                 setNewMessage("");
@@ -70,7 +71,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
         // eslint-disable-next-line
     }, []);
-    console.log(typing);
 
     useEffect(() => {
         fetchMessages();
@@ -88,6 +88,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 if (!notification.includes(newMessageRecieved)) {
                     setNotification([newMessageRecieved, ...notification]);
                     setFetchAgain(!fetchAgain);
+                    setMessages([...messages, newMessageRecieved]);
                 }
             } else {
                 setMessages([...messages, newMessageRecieved]);
@@ -96,6 +97,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     });
 
     const typingHandler = (e) => {
+        e.stopPropagation();
+
         setNewMessage(e.target.value);
 
         if (!socketConnected) return;
