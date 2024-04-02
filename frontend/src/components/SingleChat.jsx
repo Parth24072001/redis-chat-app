@@ -1,16 +1,15 @@
 import "./styles.css";
-import { getSender, getSenderFull } from "../config/ChatLogics";
+import { getSender } from "../config/ChatLogics";
 import { useEffect, useState } from "react";
 
 import ScrollableChat from "./ScrollableChat";
 
 import io from "socket.io-client";
-import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
-import ProfileModal from "./miscellaneous/ProfileModal";
 
 import { MessageWithUser, MessageWithUserId } from "../modules/api";
-import Loader from "../shared/Loader";
+
+import EditGroupChatModal from "./miscellaneous/EditGroupChatModal";
 
 var socket, selectedChatCompare;
 
@@ -22,14 +21,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [typing, setTyping] = useState(false);
     const [istyping, setIsTyping] = useState(false);
 
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-
-        rendererSettings: {
-            preserveAspectRatio: "xMidYMid slice",
-        },
-    };
     const {
         selectedChat,
         setSelectedChat,
@@ -79,6 +70,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
         // eslint-disable-next-line
     }, []);
+    console.log(typing);
 
     useEffect(() => {
         fetchMessages();
@@ -135,18 +127,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                         {messages &&
                             (!selectedChat.isGroupChat ? (
                                 <>
-                                    {getSender(user, selectedChat.users)}
-                                    <ProfileModal
+                                    {getSender(user, selectedChat?.users)}
+                                    {/* <ProfileModal
                                         user={getSenderFull(
                                             user,
                                             selectedChat.users
                                         )}
-                                    />
+                                    /> */}
                                 </>
                             ) : (
                                 <>
                                     {selectedChat.chatName.toUpperCase()}
-                                    <UpdateGroupChatModal
+                                    <EditGroupChatModal
                                         fetchMessages={fetchMessages}
                                         fetchAgain={fetchAgain}
                                         setFetchAgain={setFetchAgain}
@@ -155,42 +147,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                             ))}
                     </text>
                     <div className="flex flex-col justify-end p-3 bg-gray-200 w-full h-full rounded-lg overflow-hidden">
-                        {false ? (
-                            <Loader />
-                        ) : (
-                            <div className="messages">
-                                <ScrollableChat messages={messages} />
-                            </div>
-                        )}
+                        <div className="messages">
+                            <ScrollableChat messages={messages} />
+                        </div>
 
-                        {/* <FormControl
-                            onKeyDown={sendMessage}
-                            id="first-name"
-                            isRequired
-                            mt={3}
-                        >
-                            {istyping ? (
-                                <div>
-                                    <Lottie
-                                        options={defaultOptions}
-                                        // height={50}
-                                        width={70}
-                                        style={{
-                                            marginBottom: 15,
-                                            marginLeft: 0,
-                                        }}
-                                    />
-                                </div>
-                            ) : (
-                                <></>
-                            )}
+                        <form onKeyDown={sendMessage} id="first-name">
+                            {istyping ? <div>Typing</div> : <></>}
                             <input
-                                className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
+                                className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500 mt-2"
                                 placeholder="Enter a message.."
                                 value={newMessage}
-                                onChange={typingHandler}
+                                onChange={(e) => typingHandler(e)}
                             />
-                        </FormControl> */}
+                        </form>
                     </div>
                 </>
             ) : (

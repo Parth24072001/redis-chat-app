@@ -8,7 +8,7 @@ import { Dialog, Transition } from "@headlessui/react";
 
 // eslint-disable-next-line react/prop-types
 
-const ProfileModal = ({ setOpenModel }) => {
+const UserProfileModal = ({ setOpenModel }) => {
     const { user } = useUser();
 
     const [open, setOpen] = useState(true);
@@ -78,4 +78,4 @@ const ProfileModal = ({ setOpenModel }) => {
     );
 };
 
-export default ProfileModal;
+export default UserProfileModal;

@@ -4,17 +4,115 @@ import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
+import UserListItem from "../userAvatar/UserListItem";
+import {
+    SearchUser,
+    addUserInGroup,
+    removeUserInGroup,
+    renameGroup,
+} from "../../modules/api";
 
-const UpdateGroupChatModal = ({ setOpenModel, openModel }) => {
-    const [groupChatName, setGroupChatName] = useState();
-
+const EditGroupModal = ({
+    setOpenModel,
+    openModel,
+    fetchMessages,
+    fetchAgain,
+    setFetchAgain,
+}) => {
     const [open, setOpen] = useState(true);
-
-    const { selectedChat } = ChatState();
 
     const handleClose = () => {
         setOpenModel(!openModel);
         setOpen(false);
+    };
+
+    const [groupChatName, setGroupChatName] = useState();
+    const [search, setSearch] = useState("");
+    const [searchResult, setSearchResult] = useState([]);
+
+    const [selectedUsers, setSelectedUsers] = useState([]);
+
+    const { selectedChat, setSelectedChat, user } = ChatState();
+
+    const handleSearch = async (query) => {
+        setSearch(query);
+        if (!query) {
+            return;
+        }
+
+        try {
+            const { data } = await SearchUser(search);
+            setSearchResult(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleRename = async () => {
+        if (!groupChatName) return;
+
+        try {
+            const { data } = await renameGroup({
+                chatId: selectedChat._id,
+                chatName: groupChatName,
+            });
+
+            // setSelectedChat("");
+            setSelectedChat(data);
+            setFetchAgain(!fetchAgain);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleAddUser = async (user1) => {
+        if (selectedUsers.includes(user1)) {
+            return;
+        }
+
+        setSelectedUsers([...selectedUsers, user1]);
+
+        if (selectedChat?.users.find((u) => u._id === user1._id)) {
+            return;
+        }
+
+        if (selectedChat?.groupAdmin._id !== user._id) {
+            return;
+        }
+
+        try {
+            const { data } = await addUserInGroup({
+                chatId: selectedChat._id,
+                userId: user1._id,
+            });
+
+            setSelectedChat(data);
+            setFetchAgain(!fetchAgain);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleRemove = async (user1) => {
+        if (
+            selectedChat.groupAdmin._id !== user._id &&
+            user1._id !== user._id
+        ) {
+            return;
+        }
+
+        try {
+            const { data } = await removeUserInGroup({
+                chatId: selectedChat._id,
+                userId: user1._id,
+            });
+
+            user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+            setFetchAgain(!fetchAgain);
+            fetchMessages();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -55,22 +153,22 @@ const UpdateGroupChatModal = ({ setOpenModel, openModel }) => {
                                             {selectedChat?.chatName}
                                         </p>
 
-                                        <div className="mt-3 text-center   sm:text-left w-full">
-                                            {selectedChat?.users.map((u) => (
+                                        <div className="mt-3 text-center   sm:text-left w-full flex justify-start items-center">
+                                            {selectedChat?.users?.map((u) => (
                                                 <UserBadgeItem
                                                     key={u._id}
                                                     user={u}
                                                     admin={
                                                         selectedChat.groupAdmin
                                                     }
-                                                    // handleFunction={() =>
-                                                    //     handleRemove(u)
-                                                    // }
+                                                    handleFunction={() =>
+                                                        handleRemove(u)
+                                                    }
                                                 />
                                             ))}
                                         </div>
                                         <div className="mt-3 text-center  sm:text-left w-full">
-                                            <label>Expense Type</label>
+                                            <label>Group Name</label>
                                             <input
                                                 className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
                                                 placeholder="Chat Name"
@@ -81,25 +179,29 @@ const UpdateGroupChatModal = ({ setOpenModel, openModel }) => {
                                                     )
                                                 }
                                             />
-                                            {/* {loading ? (
-                                                <Loader />
-                                            ) : (
-                                                searchResult?.map((user) => (
-                                                    <UserListItem
-                                                        key={user._id}
-                                                        user={user}
-                                                        handleFunction={() =>
-                                                            handleAddUser(user)
-                                                        }
-                                                    />
-                                                ))
-                                            )} */}
-                                            <button>Update</button>
+                                        </div>
+                                        <div className=" w-full">
+                                            <label>User Name</label>
+                                            <input
+                                                className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500 mb-2"
+                                                placeholder="Add Users eg: John, Piyush, Jane"
+                                                onChange={(e) =>
+                                                    handleSearch(e.target.value)
+                                                }
+                                            />
+
+                                            {searchResult?.map((user) => (
+                                                <UserListItem
+                                                    key={user._id}
+                                                    user={user}
+                                                    handleFunction={() =>
+                                                        handleAddUser(user)
+                                                    }
+                                                />
+                                            ))}
                                         </div>
                                     </div>
                                     <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-2">
-                                        <button>Update</button>
-
                                         <button
                                             type="button"
                                             className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blackolive shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
@@ -109,9 +211,17 @@ const UpdateGroupChatModal = ({ setOpenModel, openModel }) => {
                                         </button>
 
                                         <button
-                                        // onClick={() => handleRemove(user)}
+                                            onClick={() => handleRemove(user)}
+                                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blackolive shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                         >
                                             Leave Group
+                                        </button>
+
+                                        <button
+                                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blackolive shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                            onClick={() => handleRename()}
+                                        >
+                                            Update
                                         </button>
                                     </div>
                                 </Dialog.Panel>
@@ -125,4 +235,4 @@ const UpdateGroupChatModal = ({ setOpenModel, openModel }) => {
     );
 };
 
-export default UpdateGroupChatModal;
+export default EditGroupModal;

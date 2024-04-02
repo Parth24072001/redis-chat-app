@@ -3,12 +3,12 @@
 import { useEffect } from "react";
 import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
-import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
 
 import { Chat } from "../modules/api";
 import { isArray } from "lodash";
 import { useUser } from "../Context/userProvider";
+import CreateGroupChatModal from "./miscellaneous/CreateGroupChatModal";
 
 const MyChats = ({ fetchAgain }) => {
     const { user } = useUser();
@@ -32,9 +32,7 @@ const MyChats = ({ fetchAgain }) => {
         <div className="flex md:flex flex-col items-center  bg-white w-full  h-full rounded-lg border-1">
             <div className="pb-3 px-3 text-lg md:text-xl font-work-sans flex justify-between items-center w-full">
                 My Chats
-                <GroupChatModal>
-                    <button>New Group Chat</button>
-                </GroupChatModal>
+                <CreateGroupChatModal />
             </div>
             <div className="flex flex-col p-3 bg-gray-200 w-full h-full rounded-lg overflow-hidden">
                 {chats ? (
@@ -57,10 +55,6 @@ const MyChats = ({ fetchAgain }) => {
                                     :{" "}
                                     {chat.latestMessage && (
                                         <span>
-                                            {/* <b>
-                                                {chat.latestMessage.sender.name}{" "}
-                                                :{" "}
-                                            </b> */}
                                             {chat.latestMessage.content.length >
                                             50
                                                 ? chat.latestMessage.content.substring(

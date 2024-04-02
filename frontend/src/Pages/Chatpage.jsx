@@ -20,8 +20,8 @@ const Chatpage = () => {
                 <div className="pl-[400px] w-full   ">
                     <div className=" border-l border-black">
                         <Header />
-                        <main className="md:py-[35px] py-[22px] px-4 sm:px-6 lg:px-[30px] chatbox">
-                            <div className="!flex  w-full p-[10px]">
+                        <main className="chatbox">
+                            <div className="!flex  w-full p-[10px] h-full">
                                 <Chatbox
                                     fetchAgain={fetchAgain}
                                     setFetchAgain={setFetchAgain}

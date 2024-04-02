@@ -40,3 +40,19 @@ export const MessageWithUserId = (id) => {
 export const MessageWithUser = (data) => {
     return api.post(`/message`, data);
 };
+
+export const createGroup = (data) => {
+    return api.post(`/chat/group`, data);
+};
+
+export const addUserInGroup = (data) => {
+    return api.put(`/chat/groupadd`, data);
+};
+
+export const removeUserInGroup = (data) => {
+    return api.put(`/chat/groupremove`, data);
+};
+
+export const renameGroup = (data) => {
+    return api.put(`/chat/rename`, data);
+};

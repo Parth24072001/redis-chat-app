@@ -3,10 +3,11 @@
 import { useNavigate } from "react-router-dom";
 import { removeItemInCookie } from "../../shared/helpers/utils";
 import ModalPortal from "../../shared/ModalPortal";
-import ProfileModal from "./ProfileModal";
+
 import { useState } from "react";
 import { ChatState } from "../../Context/ChatProvider";
 import { getSender } from "../../config/ChatLogics";
+import UserProfileModal from "./UserProfileModal";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -104,7 +105,7 @@ const Header = () => {
                 </div>
             </div>
             <ModalPortal open={activeModal?.ProfileModal}>
-                <ProfileModal setOpenModel={openModal} />
+                <UserProfileModal setOpenModel={openModal} />
             </ModalPortal>
         </div>
     );

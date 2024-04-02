@@ -1,9 +1,6 @@
 /* eslint-disable react/prop-types */
-import { ChatState } from "../../Context/ChatProvider";
 
-const UserListItem = ({ handleFunction }) => {
-    const { user } = ChatState();
-
+const UserListItem = ({ user, handleFunction }) => {
     return (
         <div
             onClick={handleFunction}
