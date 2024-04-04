@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./styles.css";
 import { getSender } from "../config/ChatLogics";
 import { useEffect, useState } from "react";
@@ -34,7 +35,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
         try {
             const { data } = await MessageWithUserId(selectedChat._id);
-
             setMessages(data);
 
             socket.emit("join chat", selectedChat._id);
@@ -68,16 +68,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setIsTyping(true));
         socket.on("stop typing", () => setIsTyping(false));
-
-        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         fetchMessages();
 
         selectedChatCompare = selectedChat;
-        // eslint-disable-next-line
     }, [selectedChat]);
+
+    useEffect(() => {
+        socket.on("message recieved", (newMessageRecieved) => {
+            if (
+                !selectedChatCompare ||
+                selectedChatCompare._id !== newMessageRecieved.chat._id
+            ) {
+                if (!notification.includes(newMessageRecieved)) {
+                    setNotification([newMessageRecieved, ...notification]);
+                    setFetchAgain(!fetchAgain);
+                }
+            } else {
+                setMessages([...messages, newMessageRecieved]);
+            }
+        });
+    }, []);
 
     const typingHandler = (e) => {
         e.stopPropagation();
@@ -101,27 +114,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
         }, timerLength);
     };
-
-    const mesaa = socket?.on(("message", (newMsg) => console.log(newMsg)));
-    console.log(mesaa);
-    useEffect(() => {
-        socket.on("message recieved", (newMessageRecieved) => {
-            if (
-                !selectedChatCompare || // if chat is not selected or doesn't match current chat
-                selectedChatCompare._id !== newMessageRecieved.chat._id
-            ) {
-                console.log("inside if");
-                if (!notification.includes(newMessageRecieved)) {
-                    setNotification([newMessageRecieved, ...notification]);
-                    setFetchAgain(!fetchAgain);
-                    setMessages([...messages, newMessageRecieved]);
-                }
-            } else {
-                console.log("inside else");
-                setMessages([...messages, newMessageRecieved]);
-            }
-        });
-    }, []);
 
     return (
         <>

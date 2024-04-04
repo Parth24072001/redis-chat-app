@@ -22,6 +22,7 @@ const ChatProvider = ({ children }) => {
                 selectedChat,
                 setSelectedChat,
                 user,
+                setUser,
                 notification,
                 setNotification,
                 chats,

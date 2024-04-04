@@ -5,17 +5,12 @@ import Header from "../components/miscellaneous/Header";
 
 const Chatpage = () => {
     const [fetchAgain, setFetchAgain] = useState(false);
-    const [sidebarOpen, setSidebarOpen] = useState(true);
 
     return (
         <>
             <div className=" flex ">
                 <div className=" fixed inset-y-0 z-50 flex w-[400px] flex-col ">
-                    <SideDrawer
-                        setSidebarOpen={setSidebarOpen}
-                        sidebarOpen={sidebarOpen}
-                        fetchAgain={fetchAgain}
-                    />
+                    <SideDrawer fetchAgain={fetchAgain} />
                 </div>
                 <div className="pl-[400px] w-full   ">
                     <div className=" border-l border-black">

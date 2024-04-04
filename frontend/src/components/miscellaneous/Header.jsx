@@ -38,7 +38,6 @@ const Header = () => {
         removeItemInCookie("refreshToken");
         navigate("/login");
     };
-
     console.log(notification);
 
     return (

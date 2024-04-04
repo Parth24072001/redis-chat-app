@@ -10,7 +10,7 @@ import { ChatWithId, SearchUser } from "../../modules/api";
 import Loader from "../../shared/Loader";
 import MyChats from "../MyChats";
 
-function SideDrawer({ setSidebarOpen, sidebarOpen, fetchAgain }) {
+function SideDrawer({ fetchAgain }) {
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [loading, setLoading] = useState(false);
