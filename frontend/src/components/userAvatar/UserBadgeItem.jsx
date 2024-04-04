@@ -1,15 +1,20 @@
 /* eslint-disable react/prop-types */
 
-const UserBadgeItem = ({ user, handleFunction, admin }) => {
+import { useUser } from "../../Context/userProvider";
+
+const UserBadgeItem = ({ users, handleFunction, admin }) => {
+    const { user } = useUser();
+
     return (
-        <div
+        <button
             className="px-2 py-1 rounded-lg m-1 mb-2 bg-purple-500 text-white cursor-pointer text-sm"
             onClick={handleFunction}
+            disabled={users?._id === user?.currentUser?._id}
         >
-            {user?.name}
-            {admin === user?._id && <span> (Admin)</span>}
+            {users?.name}
+            {admin === users?._id && <span> (Admin)</span>}
             {/* <CloseIcon pl={1} /> */}
-        </div>
+        </button>
     );
 };
 

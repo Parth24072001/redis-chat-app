@@ -9,8 +9,10 @@ import {
     SearchUser,
     addUserInGroup,
     removeUserInGroup,
-    renameGroup,
+    ChatRename,
+    deleteGroup,
 } from "../../modules/api";
+import { useUser } from "../../Context/userProvider";
 
 const EditGroupModal = ({
     setOpenModel,
@@ -32,7 +34,8 @@ const EditGroupModal = ({
 
     const [selectedUsers, setSelectedUsers] = useState([]);
 
-    const { selectedChat, setSelectedChat, user } = ChatState();
+    const { selectedChat, setSelectedChat } = ChatState();
+    const { user } = useUser();
 
     const handleSearch = async (query) => {
         setSearch(query);
@@ -52,7 +55,7 @@ const EditGroupModal = ({
         if (!groupChatName) return;
 
         try {
-            const { data } = await renameGroup({
+            const { data } = await ChatRename({
                 chatId: selectedChat._id,
                 chatName: groupChatName,
             });
@@ -76,7 +79,7 @@ const EditGroupModal = ({
             return;
         }
 
-        if (selectedChat?.groupAdmin._id !== user._id) {
+        if (selectedChat?.groupAdmin._id !== user?.currentUser._id) {
             return;
         }
 
@@ -93,10 +96,11 @@ const EditGroupModal = ({
         }
     };
 
-    const handleRemove = async (user1) => {
+    const handleuserRemove = async (user1) => {
+        console.log(user1);
         if (
-            selectedChat.groupAdmin._id !== user._id &&
-            user1._id !== user._id
+            selectedChat.groupAdmin._id !== user?.currentUser._id &&
+            user1._id !== user?.currentUser._id
         ) {
             return;
         }
@@ -107,9 +111,23 @@ const EditGroupModal = ({
                 userId: user1._id,
             });
 
-            user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+            user1._id === user?.currentUser._id
+                ? setSelectedChat()
+                : setSelectedChat(data);
             setFetchAgain(!fetchAgain);
             fetchMessages();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleGroupDelete = async () => {
+        if (!selectedChat?._id) return;
+
+        try {
+            await deleteGroup(selectedChat?._id);
+
+            setFetchAgain(!fetchAgain);
         } catch (error) {
             console.log(error);
         }
@@ -157,28 +175,38 @@ const EditGroupModal = ({
                                             {selectedChat?.users?.map((u) => (
                                                 <UserBadgeItem
                                                     key={u._id}
-                                                    user={u}
+                                                    users={u}
                                                     admin={
                                                         selectedChat.groupAdmin
                                                     }
                                                     handleFunction={() =>
-                                                        handleRemove(u)
+                                                        handleuserRemove(u)
                                                     }
                                                 />
                                             ))}
                                         </div>
                                         <div className="mt-3 text-center  sm:text-left w-full">
                                             <label>Group Name</label>
-                                            <input
-                                                className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
-                                                placeholder="Chat Name"
-                                                value={groupChatName}
-                                                onChange={(e) =>
-                                                    setGroupChatName(
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
+                                            <div className="flex justify-between gap-2">
+                                                <input
+                                                    className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
+                                                    placeholder="Chat Name"
+                                                    value={groupChatName}
+                                                    onChange={(e) =>
+                                                        setGroupChatName(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                                <button
+                                                    className=" inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blackolive shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50  sm:w-auto "
+                                                    onClick={() =>
+                                                        handleRename()
+                                                    }
+                                                >
+                                                    Update Group Name
+                                                </button>
+                                            </div>
                                         </div>
                                         <div className=" w-full">
                                             <label>User Name</label>
@@ -209,20 +237,27 @@ const EditGroupModal = ({
                                         >
                                             Cancel
                                         </button>
-
                                         <button
-                                            onClick={() => handleRemove(user)}
+                                            onClick={() =>
+                                                handleuserRemove(
+                                                    user?.currentUser
+                                                )
+                                            }
                                             className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blackolive shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                         >
                                             Leave Group
                                         </button>
-
-                                        <button
-                                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blackolive shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                            onClick={() => handleRename()}
-                                        >
-                                            Update
-                                        </button>
+                                        {selectedChat?.groupAdmin?._id ===
+                                            user?.currentUser?._id && (
+                                            <button
+                                                onClick={() =>
+                                                    handleGroupDelete()
+                                                }
+                                                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blackolive shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                            >
+                                                Delete Group
+                                            </button>
+                                        )}
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>

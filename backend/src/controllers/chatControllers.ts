@@ -171,6 +171,22 @@ const addToGroup = asyncHandler(async (req: Request, res: Response) => {
     res.json(added);
   }
 });
+const deleteGroup = asyncHandler(async (req: any, res: any) => {
+  const groupId = req.params.groupId; // Assuming group chat ID is passed as a parameter
+
+  try {
+    const deletedGroupChat = await Chat.findOneAndDelete({ _id: groupId });
+
+    if (!deletedGroupChat) {
+      return res.status(404).json({ message: "Group chat not found" });
+    }
+
+    res.status(200).json({ message: "Group chat deleted successfully" });
+  } catch (error: any) {
+    console.error("Error deleting group chat:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 export {
   accessChat,
@@ -179,4 +195,5 @@ export {
   renameGroup,
   addToGroup,
   removeFromGroup,
+  deleteGroup,
 };

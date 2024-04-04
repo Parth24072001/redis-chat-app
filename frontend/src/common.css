@@ -14,6 +14,9 @@ body {
   height: 0.25rem;
 
 }
+button:disabled{
+  @apply  bg-gray-100 border text-black border-gray-300 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500
+}
 
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
