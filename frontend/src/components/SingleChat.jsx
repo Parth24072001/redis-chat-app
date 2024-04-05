@@ -68,11 +68,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setIsTyping(true));
         socket.on("stop typing", () => setIsTyping(false));
-    }, []);
+    }, [socket]);
 
     useEffect(() => {
         fetchMessages();
-
         selectedChatCompare = selectedChat;
     }, [selectedChat]);
 
@@ -90,7 +89,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 setMessages([...messages, newMessageRecieved]);
             }
         });
-    }, []);
+    });
 
     const typingHandler = (e) => {
         e.stopPropagation();

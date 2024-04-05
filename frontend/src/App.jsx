@@ -12,32 +12,7 @@ import Signup from "./components/Authentication/Signup";
 
 function App() {
     const UnAuthenticated = () => <Outlet />;
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const refreshToken = getItemFromCookie(REFRESHTOKEN);
-    //         if (refreshToken) {
-    //             try {
-    //                 const data = await rereshToken(refreshToken);
 
-    //                 setItemInCookie(
-    //                     ACCESSTOKEN,
-    //                     `${data?.data?.data?.accessToken}`
-    //                 );
-    //             } catch (error) {
-    //                 console.error("Error refreshing token:", error);
-    //             }
-    //         }
-    //     };
-
-    //     const refreshTokenFromCookie = getItemFromCookie(REFRESHTOKEN);
-
-    //     if (refreshTokenFromCookie) {
-    //         const delayInMilliseconds = 10 * 60 * 60 * 1000;
-    //         setTimeout(() => {
-    //             fetchData();
-    //         }, delayInMilliseconds);
-    //     }
-    // }, []);
     return (
         <div>
             <Routes>

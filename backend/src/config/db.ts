@@ -7,9 +7,11 @@ const connectDB = async () => {
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        useCreateIndex: true, // This will address the deprecation warning for collection.ensureIndex
+        useCreateIndex: true,
+        useFindAndModify: false,
       }
     );
+
     console.log(
       `\n MongoDB connected !! DB HOST: ${connectionInstance.connection.port}`
     );
