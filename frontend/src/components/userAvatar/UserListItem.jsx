@@ -2,7 +2,7 @@
 
 const UserListItem = ({ user, handleFunction }) => {
     return (
-        <div
+        <button
             onClick={handleFunction}
             className="cursor-pointer bg-gray-200 hover:bg-teal-400 text-black hover:text-white w-full flex items-center px-3 py-2 mb-2 rounded-lg"
         >
@@ -14,7 +14,7 @@ const UserListItem = ({ user, handleFunction }) => {
                     {user.email}
                 </text>
             </div>
-        </div>
+        </button>
     );
 };
 

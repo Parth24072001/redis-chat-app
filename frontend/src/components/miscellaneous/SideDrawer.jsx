@@ -50,37 +50,42 @@ function SideDrawer({ fetchAgain }) {
     };
 
     return (
-        <>
-            <div className="sidebarContent">
-                <div className=" flex pb-2 gap-2">
-                    <input
-                        className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
-                        placeholder="Search by name or email"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <button
-                        onClick={handleSearch}
-                        className="rounded bg-indigo-50 px-2 py-1 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100"
-                    >
-                        Go
-                    </button>
-                </div>
-                {loading ? (
-                    <ChatLoading />
-                ) : (
-                    searchResult?.map((user) => (
-                        <UserListItem
-                            key={user._id}
-                            user={user}
-                            handleFunction={() => accessChat(user._id)}
-                        />
-                    ))
-                )}
-                {loadingChat && <Loader />}
-                <MyChats fetchAgain={fetchAgain} />
+        <div className="sidebarContent">
+            <div className=" flex pb-2 gap-2">
+                <input
+                    className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500"
+                    placeholder="Search by name or email"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+                <button
+                    onClick={handleSearch}
+                    className="rounded bg-indigo-50 px-2 py-1 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100"
+                >
+                    Go
+                </button>
+                <button
+                    onClick={() => setSearchResult([])}
+                    className="rounded bg-indigo-50 px-2 py-1 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100"
+                >
+                    Clear
+                </button>
             </div>
-        </>
+            {loading ? (
+                <ChatLoading />
+            ) : (
+                searchResult?.map((user) => (
+                    <UserListItem
+                        key={user._id}
+                        user={user}
+                        handleFunction={() => accessChat(user._id)}
+                    />
+                ))
+            )}
+            {searchResult.length === 0 && <p>No Data Found</p>}
+            {loadingChat && <Loader />}
+            <MyChats fetchAgain={fetchAgain} />
+        </div>
     );
 }
 

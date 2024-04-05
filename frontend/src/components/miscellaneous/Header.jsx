@@ -63,7 +63,7 @@ const Header = () => {
                         <ul className=" absolute top-1 right-0 transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6 !w-[300px]">
                             {!notification.length && "No New Messages"}
                             {notification.map((notif) => (
-                                <li
+                                <button
                                     key={notif._id}
                                     onClick={() => {
                                         setSelectedChat(notif.chat);
@@ -80,7 +80,7 @@ const Header = () => {
                                               user,
                                               notif.chat.users
                                           )}`}
-                                </li>
+                                </button>
                             ))}
                         </ul>
                     )}

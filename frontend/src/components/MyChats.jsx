@@ -38,13 +38,13 @@ const MyChats = ({ fetchAgain }) => {
                 {chats ? (
                     <div className=" overflow-y-scroll">
                         {isArray(chats) &&
-                            chats?.map((chat) => (
-                                <div
+                            chats?.map((chat, index) => (
+                                <button
                                     onClick={() => setSelectedChat(chat)}
-                                    className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg mb-1"
-                                    key={chat}
+                                    className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg mb-1 w-full"
+                                    key={index}
                                 >
-                                    <span>
+                                    <span className=" text-lg text-black">
                                         {!chat.isGroupChat
                                             ? getSender(
                                                   user?.currentUser,
@@ -64,7 +64,7 @@ const MyChats = ({ fetchAgain }) => {
                                                 : chat.latestMessage.content}
                                         </span>
                                     )}
-                                </div>
+                                </button>
                             ))}
                     </div>
                 ) : (
