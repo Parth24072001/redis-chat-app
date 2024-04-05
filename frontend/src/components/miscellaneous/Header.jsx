@@ -11,6 +11,7 @@ import UserProfileModal from "./UserProfileModal";
 
 const Header = () => {
     const navigate = useNavigate();
+
     const [activeModal, setActiveModal] = useState({
         ProfileModal: false,
         notificationModal: false,
@@ -38,7 +39,6 @@ const Header = () => {
         removeItemInCookie("refreshToken");
         navigate("/login");
     };
-    console.log(notification);
 
     return (
         <div className="header">

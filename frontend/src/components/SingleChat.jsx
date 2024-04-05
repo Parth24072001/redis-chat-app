@@ -11,6 +11,7 @@ import { ChatState } from "../Context/ChatProvider";
 import { MessageWithUser, MessageWithUserId } from "../modules/api";
 
 import EditGroupChatModal from "./miscellaneous/EditGroupChatModal";
+import TypingIndicator from "./miscellaneous/TypingIndicator";
 
 let socket, selectedChatCompare;
 
@@ -99,7 +100,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         if (!socketConnected) return;
 
         if (!typing) {
-            setTyping(true);
+            // setTyping(true);
             socket.emit("typing", selectedChat._id);
         }
         let lastTypingTime = new Date().getTime();
@@ -150,7 +151,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                         </div>
 
                         <form onKeyDown={sendMessage} id="first-name">
-                            {istyping ? <div>Typing</div> : <></>}
+                            {istyping ? <TypingIndicator /> : <></>}
                             <input
                                 className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500 mt-2"
                                 placeholder="Enter a message.."

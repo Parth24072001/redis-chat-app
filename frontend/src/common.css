@@ -36,3 +36,26 @@ button:disabled{
 .chatbox{
     height: calc( 100vh - 64px);
 }
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: blue;
+  border-radius: 50%;
+  margin-right: 5px;
+  animation: bounce 0.3s infinite alternate;
+}
+
+@keyframes bounce {
+  0% {
+      transform: translateY(0);
+  }
+  100% {
+      transform: translateY(-5px);
+  }
+}

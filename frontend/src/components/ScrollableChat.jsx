@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+import React, { useEffect, useRef } from "react";
 import {
     isLastMessage,
     isSameSender,
@@ -10,10 +10,21 @@ import { useUser } from "../Context/userProvider";
 
 const ScrollableChat = ({ messages }) => {
     const { user } = useUser();
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     return (
         <>
             {messages &&
-                // eslint-disable-next-line react/prop-types
                 messages.map((m, i) => (
                     <div style={{ display: "flex" }} key={m._id}>
                         {(isSameSender(messages, m, i, user?.currentUser._id) ||
@@ -60,6 +71,7 @@ const ScrollableChat = ({ messages }) => {
                         </span>
                     </div>
                 ))}
+            <div ref={messagesEndRef} />
         </>
     );
 };
