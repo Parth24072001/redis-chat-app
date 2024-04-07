@@ -9,24 +9,22 @@ import { Chat } from "../modules/api";
 import { isArray } from "lodash";
 import { useUser } from "../Context/userProvider";
 import CreateGroupChatModal from "./miscellaneous/CreateGroupChatModal";
+import useGetChats from "../hooks/useGetChats";
+import Loader from "../shared/Loader";
 
-const MyChats = ({ fetchAgain }) => {
-    const { user } = useUser();
-
+const MyChats = () => {
     const { setSelectedChat, chats, setChats } = ChatState();
 
-    const fetchChats = async () => {
-        try {
-            const { data } = await Chat();
-            setChats(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const { user } = useUser();
+    const { data: chatData, isLoading } = useGetChats(setChats);
 
     useEffect(() => {
-        fetchChats();
-    }, [fetchAgain]);
+        setChats(chatData);
+    }, [chatData]);
+
+    if (isLoading) {
+        return <Loader />;
+    }
 
     return (
         <div className="flex md:flex flex-col items-center  bg-white w-full  h-full rounded-lg border-1">
@@ -34,7 +32,7 @@ const MyChats = ({ fetchAgain }) => {
                 My Chats
                 <CreateGroupChatModal />
             </div>
-            <div className="flex flex-col p-3 bg-gray-200 w-full h-full rounded-lg overflow-hidden">
+            <div className="flex flex-col p-3 bg-gray-200 w-full h-full rounded-lg overflow-hidden chatUserList">
                 {chats ? (
                     <div className=" overflow-y-scroll">
                         {isArray(chats) &&

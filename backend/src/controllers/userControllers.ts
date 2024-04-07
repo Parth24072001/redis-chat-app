@@ -15,6 +15,12 @@ const allUsers = asyncHandler(async (req: any, res: any, next: any) => {
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+
+  // Check if users array is empty
+  if (users.length === 0) {
+    return res.status(404).send({ message: "No data found" });
+  }
+
   res.send(users);
 });
 

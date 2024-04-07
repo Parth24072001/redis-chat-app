@@ -6,9 +6,13 @@ import ChatLoading from "../ChatLoading";
 import UserListItem from "../userAvatar/UserListItem";
 import { ChatState } from "../../Context/ChatProvider";
 import { ChatWithId, SearchUser } from "../../modules/api";
+import { toast } from "react-toastify";
 
 import Loader from "../../shared/Loader";
 import MyChats from "../MyChats";
+import { isEmpty } from "lodash";
+import useSearchUser from "../../hooks/useSearchUser";
+import useChatWithId from "../../hooks/useChatWithId";
 
 function SideDrawer({ fetchAgain }) {
     const [search, setSearch] = useState("");
@@ -24,29 +28,18 @@ function SideDrawer({ fetchAgain }) {
         setChats,
     } = ChatState();
 
-    const handleSearch = async () => {
-        if (!search) {
-            return;
-        }
+    const { mutate: SearchUser } = useSearchUser(setSearchResult);
 
-        try {
-            const { data } = await SearchUser(search);
-            setSearchResult(data);
-        } catch (error) {
-            console.log(error);
-        }
+    const handleSearch = async (query) => {
+        SearchUser(query);
     };
-
+    const { mutate: ChatWithId } = useChatWithId(
+        setChats,
+        chats,
+        setSelectedChat
+    );
     const accessChat = async (userId) => {
-        try {
-            const { data } = await ChatWithId({ userId });
-
-            if (!chats?.find((c) => c._id === data._id))
-                setChats([data, ...chats]);
-            setSelectedChat(data);
-        } catch (error) {
-            console.log(error);
-        }
+        ChatWithId({ userId });
     };
 
     return (
@@ -74,6 +67,7 @@ function SideDrawer({ fetchAgain }) {
             {loading ? (
                 <ChatLoading />
             ) : (
+                !isEmpty(searchResult) &&
                 searchResult?.map((user) => (
                     <UserListItem
                         key={user._id}
@@ -82,9 +76,9 @@ function SideDrawer({ fetchAgain }) {
                     />
                 ))
             )}
-            {searchResult.length === 0 && <p>No Data Found</p>}
+
             {loadingChat && <Loader />}
-            <MyChats fetchAgain={fetchAgain} />
+            <MyChats />
         </div>
     );
 }

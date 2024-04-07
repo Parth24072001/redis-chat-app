@@ -5,14 +5,14 @@ import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import UserListItem from "../userAvatar/UserListItem";
-import {
-    SearchUser,
-    addUserInGroup,
-    removeUserInGroup,
-    ChatRename,
-    deleteGroup,
-} from "../../modules/api";
+
 import { useUser } from "../../Context/userProvider";
+import { isEmpty } from "lodash";
+import useSearchUser from "../../hooks/useSearchUser";
+import useChatRename from "../../hooks/useChatRename";
+import useAddUserInGroup from "../../hooks/useAddUserInGroup";
+import useRemoveUserInGroup from "../../hooks/useRemoveUserInGroup";
+import useDeleteGroup from "../../hooks/useDeleteGroup";
 
 const EditGroupModal = ({
     setOpenModel,
@@ -29,7 +29,8 @@ const EditGroupModal = ({
     };
 
     const [groupChatName, setGroupChatName] = useState();
-    const [search, setSearch] = useState("");
+    const [userId, setUserId] = useState();
+
     const [searchResult, setSearchResult] = useState([]);
 
     const [selectedUsers, setSelectedUsers] = useState([]);
@@ -37,37 +38,28 @@ const EditGroupModal = ({
     const { selectedChat, setSelectedChat } = ChatState();
     const { user } = useUser();
 
-    const handleSearch = async (query) => {
-        setSearch(query);
-        if (!query) {
-            return;
-        }
+    const { mutate: SearchUser } = useSearchUser(setSearchResult);
 
-        try {
-            const { data } = await SearchUser(search);
-            setSearchResult(data);
-        } catch (error) {
-            console.log(error);
-        }
+    const handleSearch = async (query) => {
+        SearchUser(query);
     };
 
+    const { mutate: ChatRename } = useChatRename(
+        setSelectedChat,
+        setFetchAgain,
+        fetchAgain
+    );
     const handleRename = async () => {
         if (!groupChatName) return;
 
-        try {
-            const { data } = await ChatRename({
-                chatId: selectedChat._id,
-                chatName: groupChatName,
-            });
-
-            // setSelectedChat("");
-            setSelectedChat(data);
-            setFetchAgain(!fetchAgain);
-        } catch (error) {
-            console.log(error);
-        }
+        ChatRename({
+            chatId: selectedChat._id,
+            chatName: groupChatName,
+        });
+        setFetchAgain(!fetchAgain);
     };
 
+    const { mutate: addUserInGroup } = useAddUserInGroup(setSelectedChat);
     const handleAddUser = async (user1) => {
         if (selectedUsers.includes(user1)) {
             return;
@@ -83,21 +75,21 @@ const EditGroupModal = ({
             return;
         }
 
-        try {
-            const { data } = await addUserInGroup({
-                chatId: selectedChat._id,
-                userId: user1._id,
-            });
+        addUserInGroup({
+            chatId: selectedChat._id,
+            userId: user1._id,
+        });
 
-            setSelectedChat(data);
-            setFetchAgain(!fetchAgain);
-        } catch (error) {
-            console.log(error);
-        }
+        setFetchAgain(!fetchAgain);
     };
 
+    const { mutate: removeUserInGroup } = useRemoveUserInGroup(
+        setSelectedChat,
+        userId
+    );
     const handleuserRemove = async (user1) => {
-        console.log(user1);
+        setUserId(user1._id);
+
         if (
             selectedChat.groupAdmin._id !== user?.currentUser._id &&
             user1._id !== user?.currentUser._id
@@ -105,32 +97,21 @@ const EditGroupModal = ({
             return;
         }
 
-        try {
-            const { data } = await removeUserInGroup({
-                chatId: selectedChat._id,
-                userId: user1._id,
-            });
+        removeUserInGroup({
+            chatId: selectedChat._id,
+            userId: user1._id,
+        });
 
-            user1._id === user?.currentUser._id
-                ? setSelectedChat()
-                : setSelectedChat(data);
-            setFetchAgain(!fetchAgain);
-            fetchMessages();
-        } catch (error) {
-            console.log(error);
-        }
+        setFetchAgain(!fetchAgain);
+        fetchMessages();
     };
+    const { mutate: deleteGroup } = useDeleteGroup();
 
     const handleGroupDelete = async () => {
         if (!selectedChat?._id) return;
-
-        try {
-            await deleteGroup(selectedChat?._id);
-
-            setFetchAgain(!fetchAgain);
-        } catch (error) {
-            console.log(error);
-        }
+        deleteGroup(selectedChat?._id);
+        handleClose();
+        setFetchAgain(!fetchAgain);
     };
 
     return (
@@ -218,15 +199,16 @@ const EditGroupModal = ({
                                                 }
                                             />
 
-                                            {searchResult?.map((user) => (
-                                                <UserListItem
-                                                    key={user._id}
-                                                    user={user}
-                                                    handleFunction={() =>
-                                                        handleAddUser(user)
-                                                    }
-                                                />
-                                            ))}
+                                            {!isEmpty(searchResult) &&
+                                                searchResult?.map((user) => (
+                                                    <UserListItem
+                                                        key={user._id}
+                                                        user={user}
+                                                        handleFunction={() =>
+                                                            handleAddUser(user)
+                                                        }
+                                                    />
+                                                ))}
                                         </div>
                                     </div>
                                     <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-2">

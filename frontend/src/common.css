@@ -59,3 +59,7 @@ button:disabled{
       transform: translateY(-5px);
   }
 }
+
+.chatUserList{
+  max-height: calc(100vh - 122px);
+}

@@ -172,7 +172,7 @@ const addToGroup = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 const deleteGroup = asyncHandler(async (req: any, res: any) => {
-  const groupId = req.params.groupId; // Assuming group chat ID is passed as a parameter
+  const groupId = req.params.groupId;
 
   try {
     const deletedGroupChat = await Chat.findOneAndDelete({ _id: groupId });

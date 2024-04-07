@@ -12,6 +12,9 @@ import { MessageWithUser, MessageWithUserId } from "../modules/api";
 
 import EditGroupChatModal from "./miscellaneous/EditGroupChatModal";
 import TypingIndicator from "./miscellaneous/TypingIndicator";
+import useSelectedChat from "../hooks/useSelectedChat";
+import useSearchUser from "../hooks/useSearchUser";
+import useSendChat from "../hooks/useSendChat";
 
 let socket, selectedChatCompare;
 
@@ -31,35 +34,34 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         setNotification,
     } = ChatState();
 
+    const { mutate: SearchUser } = useSelectedChat(
+        selectedChat?._id,
+        setMessages
+    );
+
     const fetchMessages = async () => {
         if (!selectedChat) return;
 
-        try {
-            const { data } = await MessageWithUserId(selectedChat._id);
-            setMessages(data);
+        SearchUser();
 
-            socket.emit("join chat", selectedChat._id);
-        } catch (error) {
-            console.log(error);
-        }
+        socket.emit("join chat", selectedChat?._id);
     };
 
+    const { mutate: MessageWithUser } = useSendChat(
+        setMessages,
+        messages,
+        socket
+    );
     const sendMessage = async (event) => {
         if (event.key === "Enter" && newMessage) {
             event.preventDefault();
             socket.emit("stop typing", selectedChat._id);
-            try {
-                setNewMessage("");
 
-                const { data } = await MessageWithUser({
-                    content: newMessage,
-                    chatId: selectedChat,
-                });
-                socket.emit("new message", data);
-                setMessages([...messages, data]);
-            } catch (error) {
-                console.log(error);
-            }
+            setNewMessage("");
+            MessageWithUser({
+                content: newMessage,
+                chatId: selectedChat,
+            });
         }
     };
 

@@ -6,6 +6,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import UserListItem from "../userAvatar/UserListItem";
 import { SearchUser, createGroup } from "../../modules/api";
+import useCreateGroup from "../../hooks/useCreateGroup";
+import useSearchUser from "../../hooks/useSearchUser";
 
 const CreateGroupModal = ({ setOpenModel, openModel }) => {
     const [open, setOpen] = useState(true);
@@ -23,18 +25,10 @@ const CreateGroupModal = ({ setOpenModel, openModel }) => {
 
     const { selectedChat, setChats, chats } = ChatState();
 
-    const handleSearch = async (query) => {
-        setSearch(query);
-        if (!query) {
-            return;
-        }
+    const { mutate: SearchUser } = useSearchUser(setSearchResult);
 
-        try {
-            const { data } = await SearchUser(search);
-            setSearchResult(data);
-        } catch (error) {
-            console.log(error);
-        }
+    const handleSearch = async (query) => {
+        SearchUser(query);
     };
 
     const handleGroup = (userToAdd) => {
@@ -52,23 +46,20 @@ const CreateGroupModal = ({ setOpenModel, openModel }) => {
         );
     };
 
+    const { mutate: createGroup } = useCreateGroup(setChats, chats);
+
     const handleSubmit = async () => {
         if (!groupChatName || !selectedUsers) {
             return;
         }
 
-        try {
-            const { data } = await createGroup({
-                name: groupChatName,
-                users: JSON.stringify(selectedUsers.map((u) => u._id)),
-            });
+        createGroup({
+            name: groupChatName,
+            users: JSON.stringify(selectedUsers.map((u) => u._id)),
+        });
 
-            setChats([data, ...chats]);
-            setOpenModel(!openModel);
-            setOpen(false);
-        } catch (error) {
-            console.log(error);
-        }
+        setOpenModel(!openModel);
+        setOpen(false);
     };
 
     return (
@@ -113,7 +104,7 @@ const CreateGroupModal = ({ setOpenModel, openModel }) => {
                                             {selectedUsers?.map((u) => (
                                                 <UserBadgeItem
                                                     key={u._id}
-                                                    user={u}
+                                                    users={u}
                                                     admin={
                                                         selectedChat?.groupAdmin
                                                     }
