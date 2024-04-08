@@ -107,28 +107,23 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }, [selectedChat]);
 
     useEffect(() => {
-        console.log(" message recieved");
         socket.on("message recieved", (newMessageRecieved) => {
-            console.log("inside message recieved");
             if (
                 !selectedChatCompare ||
                 selectedChatCompare._id !== newMessageRecieved.chat._id
             ) {
-                console.log({ selectedChatCompare });
-                console.log({ newMessageRecieved });
                 if (!notification.includes(newMessageRecieved)) {
                     setNotification([newMessageRecieved, ...notification]);
                     setFetchAgain(!fetchAgain);
-                    console.log(" message recieved if");
                 }
             } else {
                 console.log({ messages });
                 console.log({ newMessageRecieved });
                 setMessages([...messages, newMessageRecieved]);
-                console.log(" message recieved else");
             }
         });
     });
+    console.log({ messages });
 
     const typingHandler = (e) => {
         e.stopPropagation();
