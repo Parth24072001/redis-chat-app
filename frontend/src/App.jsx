@@ -17,7 +17,7 @@ function App() {
         <div>
             <Routes>
                 <Route path="/*" element={withAuthentication(Home)}>
-                    <Route index element={<Navigate to={"/chatpage"} />} />
+                    <Route index element={<Navigate to={"/"} />} />
                 </Route>
                 <Route path="" element={withoutAuthentication(UnAuthenticated)}>
                     <Route path="login" index element={<Login />} />

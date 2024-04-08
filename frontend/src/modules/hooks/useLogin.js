@@ -22,7 +22,7 @@ const useLogin = () => {
                 JSON.stringify(response.data?.data?.user)
             );
 
-            navigate("/chatpage");
+            navigate("/");
             return response;
         },
         onError: (error) => {
