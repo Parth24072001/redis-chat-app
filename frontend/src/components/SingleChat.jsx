@@ -120,6 +120,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     console.log(" message recieved if");
                 }
             } else {
+                console.log({ messages });
+                console.log({ newMessageRecieved });
                 setMessages([...messages, newMessageRecieved]);
                 console.log(" message recieved else");
             }
