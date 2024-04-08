@@ -8,12 +8,10 @@ import ScrollableChat from "./ScrollableChat";
 import io from "socket.io-client";
 import { ChatState } from "../Context/ChatProvider";
 
-import { MessageWithUser, MessageWithUserId } from "../modules/api";
-
 import EditGroupChatModal from "./miscellaneous/EditGroupChatModal";
 import TypingIndicator from "./miscellaneous/TypingIndicator";
 import useSelectedChat from "../hooks/useSelectedChat";
-import useSearchUser from "../hooks/useSearchUser";
+
 import useSendChat from "../hooks/useSendChat";
 
 let socket, selectedChatCompare;
