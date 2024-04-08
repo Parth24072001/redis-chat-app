@@ -122,7 +122,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             } else {
                 console.log({ messages });
                 console.log({ newMessageRecieved });
-                setMessages([...messages, newMessageRecieved]);
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    newMessageRecieved,
+                ]);
                 console.log(" message recieved else");
             }
         });
