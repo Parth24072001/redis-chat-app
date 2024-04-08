@@ -133,7 +133,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         return () => {
             socket.off("message received", handleMessageReceived);
         };
-    }, []);
+    }, [socket]);
 
     const typingHandler = (e) => {
         e.stopPropagation();
