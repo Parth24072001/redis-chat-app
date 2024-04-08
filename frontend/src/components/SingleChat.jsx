@@ -131,7 +131,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.on("message recieved", handleMessageReceived);
 
         return () => {
-            socket.off("message received", handleMessageReceived);
+            socket.off("message recieved", handleMessageReceived);
         };
     }, [socket]);
 
