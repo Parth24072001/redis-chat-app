@@ -31,7 +31,6 @@ const CreateGroupModal = ({ setOpenModel, openModel }) => {
 
     const handleGroup = (userToAdd) => {
         if (selectedUsers.includes(userToAdd)) {
-            console.log("User already added");
             return;
         }
 

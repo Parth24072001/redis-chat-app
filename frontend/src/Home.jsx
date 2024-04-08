@@ -7,7 +7,7 @@ const Home = () => {
         <>
             <UserProvider>
                 <Routes>
-                    <Route path="/chatpage" index element={<Chatpage />} />
+                    <Route path="/" index element={<Chatpage />} />
                     {/* <Route path="/" index element={<Chatpage />} /> */}
                 </Routes>
             </UserProvider>

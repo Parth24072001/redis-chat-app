@@ -72,7 +72,7 @@ const Header = () => {
                         effect={Effect.SCALE}
                     /> */}
                     {activeModal?.notificationModal === true && (
-                        <ul className=" absolute top-1 right-0 transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6 !w-[300px]">
+                        <ul className=" absolute top-1 right-0 transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6 !w-[300px] border">
                             {!notification.length && "No New Messages"}
                             {notification.map((notif) => (
                                 <button
@@ -85,6 +85,7 @@ const Header = () => {
                                             )
                                         );
                                     }}
+                                    className="border-b "
                                 >
                                     {notif.chat.isGroupChat
                                         ? `New Message in ${notif.chat.chatName}`
