@@ -125,7 +125,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
         });
     });
-    console.log({ messages });
 
     const typingHandler = (e) => {
         e.stopPropagation();
