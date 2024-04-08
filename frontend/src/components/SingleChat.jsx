@@ -1,9 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "./styles.css";
 import { getSender } from "../config/ChatLogics";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import EmojiPicker from "emoji-picker-react";
+import SendIcon from "../assets/images/icons/send.svg?react";
+import SmileIcon from "../assets/images/icons/smile.svg?react";
 
 import ScrollableChat from "./ScrollableChat";
+import { useOnClickOutside } from "usehooks-ts";
 
 import io from "socket.io-client";
 import { ChatState } from "../Context/ChatProvider";
@@ -20,8 +24,22 @@ let socket, selectedChatCompare;
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
+    const ref = useRef(null);
+
     const [socketConnected, setSocketConnected] = useState(false);
     const [typing, setTyping] = useState(false);
+    const [openEmoji, setEmoji] = useState(false);
+    const refEmoji = useRef(null);
+    const emojiClickOutside = () => {
+        setEmoji(false);
+    };
+
+    const onEmojiClick = (e) => {
+        setNewMessage((_message) => `${_message} ${e.emoji}`);
+    };
+
+    useOnClickOutside(refEmoji, emojiClickOutside);
+
     const [istyping, setIsTyping] = useState(false);
 
     const {
@@ -52,6 +70,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     );
     const sendMessage = async (event) => {
         if (event.key === "Enter" && newMessage) {
+            event.preventDefault();
+            socket.emit("stop typing", selectedChat._id);
+
+            setNewMessage("");
+            MessageWithUser({
+                content: newMessage,
+                chatId: selectedChat,
+            });
+        }
+    };
+    const sendMessageWithButton = async (event) => {
+        if (newMessage) {
             event.preventDefault();
             socket.emit("stop typing", selectedChat._id);
 
@@ -125,15 +155,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                         </button>
                         {messages &&
                             (!selectedChat.isGroupChat ? (
-                                <>
-                                    {getSender(user, selectedChat?.users)}
-                                    {/* <ProfileModal
-                                        user={getSenderFull(
-                                            user,
-                                            selectedChat.users
-                                        )}
-                                    /> */}
-                                </>
+                                <>{getSender(user, selectedChat?.users)}</>
                             ) : (
                                 <>
                                     {selectedChat.chatName.toUpperCase()}
@@ -152,12 +174,39 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
                         <form onKeyDown={sendMessage} id="first-name">
                             {istyping ? <TypingIndicator /> : <></>}
-                            <input
-                                className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500 mt-2"
-                                placeholder="Enter a message.."
-                                value={newMessage}
-                                onChange={(e) => typingHandler(e)}
-                            />
+                            <div className="flex relative w-full gap-2 mt-2">
+                                {openEmoji && (
+                                    <div
+                                        className="emoji-container"
+                                        ref={refEmoji}
+                                    >
+                                        <EmojiPicker
+                                            onEmojiClick={onEmojiClick}
+                                            lazyLoad="true"
+                                        />
+                                    </div>
+                                )}
+
+                                <input
+                                    className=" form-control border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500 "
+                                    placeholder="Enter a message.."
+                                    value={newMessage}
+                                    ref={ref}
+                                    onChange={(e) => typingHandler(e)}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setEmoji(true)}
+                                >
+                                    <SmileIcon />
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={sendMessageWithButton}
+                                >
+                                    <SendIcon />
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </>

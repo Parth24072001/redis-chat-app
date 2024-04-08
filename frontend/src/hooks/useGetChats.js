@@ -2,10 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { Chat } from "../modules/api";
 
-const useGetChats = (setChats) => {
+const useGetChats = () => {
     return useQuery(["chats"], () => Chat(), {
         select: (res) => {
-            setChats(res?.data);
             return res?.data;
         },
         onError: () => {

@@ -5,8 +5,6 @@ import { useState } from "react";
 import ChatLoading from "../ChatLoading";
 import UserListItem from "../userAvatar/UserListItem";
 import { ChatState } from "../../Context/ChatProvider";
-import { ChatWithId, SearchUser } from "../../modules/api";
-import { toast } from "react-toastify";
 
 import Loader from "../../shared/Loader";
 import MyChats from "../MyChats";
@@ -14,26 +12,19 @@ import { isEmpty } from "lodash";
 import useSearchUser from "../../hooks/useSearchUser";
 import useChatWithId from "../../hooks/useChatWithId";
 
-function SideDrawer({ fetchAgain }) {
+function SideDrawer() {
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
-    const [loading, setLoading] = useState(false);
 
-    const [loadingChat, setLoadingChat] = useState(false);
+    const { setSelectedChat, chats, setChats } = ChatState();
 
-    const {
-        setSelectedChat,
+    const { mutate: SearchUser, isLoading: loading } =
+        useSearchUser(setSearchResult);
 
-        chats,
-        setChats,
-    } = ChatState();
-
-    const { mutate: SearchUser } = useSearchUser(setSearchResult);
-
-    const handleSearch = async (query) => {
-        SearchUser(query);
+    const handleSearch = async () => {
+        search.length > 0 && SearchUser(search);
     };
-    const { mutate: ChatWithId } = useChatWithId(
+    const { mutate: ChatWithId, isLoading: loadingChat } = useChatWithId(
         setChats,
         chats,
         setSelectedChat

@@ -3,8 +3,8 @@
 import { useNavigate } from "react-router-dom";
 import { removeItemInCookie } from "../../shared/helpers/utils";
 import ModalPortal from "../../shared/ModalPortal";
-
-import { useState } from "react";
+import { useOnClickOutside } from "usehooks-ts";
+import { useRef, useState } from "react";
 import { ChatState } from "../../Context/ChatProvider";
 import { getSender } from "../../config/ChatLogics";
 import UserProfileModal from "./UserProfileModal";
@@ -40,8 +40,20 @@ const Header = () => {
         navigate("/login");
     };
 
+    const hearderOutSideClick = useRef(null);
+
+    const onOutsideClick = (e) => {
+        setActiveModal({
+            ProfileModal: false,
+            notificationModal: false,
+            userMenuModal: false,
+        });
+    };
+
+    useOnClickOutside(hearderOutSideClick, onOutsideClick);
+
     return (
-        <div className="header">
+        <div className="header" ref={hearderOutSideClick}>
             <div></div>
             <text fontSize="2xl" fontFamily="Work sans">
                 Talk-A-Tive

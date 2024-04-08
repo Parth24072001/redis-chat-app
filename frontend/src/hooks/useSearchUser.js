@@ -12,6 +12,7 @@ const useSearchUser = (setSearchResult) => {
             toast(error?.response?.data?.message, {
                 type: "error",
             });
+            setSearchResult([]);
             console.log(error);
         },
     });

@@ -61,5 +61,12 @@ button:disabled{
 }
 
 .chatUserList{
-  max-height: calc(100vh - 122px);
+  height: calc(100vh - 122px);
+}
+
+.emoji-container {
+  @apply !absolute bottom-full;
+}
+.emoji-container aside.EmojiPickerReact.epr-main {
+  @apply !w-full;
 }

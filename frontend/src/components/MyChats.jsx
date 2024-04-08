@@ -5,7 +5,6 @@ import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
 import { ChatState } from "../Context/ChatProvider";
 
-import { Chat } from "../modules/api";
 import { isArray } from "lodash";
 import { useUser } from "../Context/userProvider";
 import CreateGroupChatModal from "./miscellaneous/CreateGroupChatModal";
@@ -16,7 +15,7 @@ const MyChats = () => {
     const { setSelectedChat, chats, setChats } = ChatState();
 
     const { user } = useUser();
-    const { data: chatData, isLoading } = useGetChats(setChats);
+    const { data: chatData, isLoading } = useGetChats();
 
     useEffect(() => {
         setChats(chatData);
