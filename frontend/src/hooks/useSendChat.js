@@ -6,7 +6,7 @@ const useSendChat = (setMessages, messages, socket) => {
     return useMutation((data) => MessageWithUser(data), {
         onSuccess: (response) => {
             socket.emit("new message", response?.data);
-            setMessages((prevMessages) => [...prevMessages, response?.data]);
+            setMessages([...messages, response?.data]);
             return response;
         },
         onError: (error) => {
