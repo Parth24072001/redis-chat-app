@@ -35,7 +35,6 @@ export const ChatWithId = (id) => {
     return api.post(`chat`, id);
 };
 export const MessageWithUserId = (id) => {
-    console.log(id);
     return api.get(`/message/${id}`);
 };
 export const MessageWithUser = (data) => {
