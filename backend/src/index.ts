@@ -64,6 +64,9 @@ io.on("connection", (socket) => {
   //   socket.leave(userData._id);
   // });
 });
+app.get("/", (req, res) => {
+  res.send("Welcome to my server!");
+});
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
