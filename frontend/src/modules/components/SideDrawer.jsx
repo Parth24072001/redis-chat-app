@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 // import { useHistory } from "react-router-dom";
 import { useState } from "react";
-import ChatLoading from "./ChatLoading";
+
 import UserListItem from "./UserListItem";
 import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 
@@ -56,7 +56,7 @@ function SideDrawer() {
                 </button>
             </div>
             {loading ? (
-                <ChatLoading />
+                <Loader />
             ) : (
                 !isEmpty(searchResult) &&
                 searchResult?.map((user) => (

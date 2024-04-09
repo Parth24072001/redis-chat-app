@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
-import ChatLoading from "./ChatLoading";
+
 import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 
 import { isArray } from "lodash";
@@ -65,7 +65,7 @@ const MyChats = () => {
                             ))}
                     </div>
                 ) : (
-                    <ChatLoading />
+                    <Loader />
                 )}
             </div>
         </div>
