@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import Chatpage from "./Pages/Chatpage";
 import { UserProvider } from "./shared/provider/user-provider/userProvider";
+import Chatpage from "./modules/components/Chatpage";
 
 const Home = () => {
     return (

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useEffect, useState } from "react";
-import useUserInfo from "../../../Context/useUserInfo";
+import useUserInfo from "../../hooks/useUserInfo";
 
 const ChatContext = createContext();
 

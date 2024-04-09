@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 
 import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
-import UserBadgeItem from "../userAvatar/UserBadgeItem";
+import UserBadgeItem from "./UserBadgeItem";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import UserListItem from "../userAvatar/UserListItem";
-import useCreateGroup from "../../hooks/useCreateGroup";
-import useSearchUser from "../../hooks/useSearchUser";
+import UserListItem from "./UserListItem";
+import useCreateGroup from "../hooks/useCreateGroup";
+import useSearchUser from "../hooks/useSearchUser";
 
 const CreateGroupModal = ({ setOpenModel, openModel }) => {
     const [open, setOpen] = useState(true);

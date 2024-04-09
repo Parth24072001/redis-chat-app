@@ -1,14 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { toast } from "react-toastify";
-import { createGroup } from "../modules/api";
+import { MessageWithUserId } from "../api";
 
-const useCreateGroup = (setChats, chats) => {
-    return useMutation((data) => createGroup(data), {
+const useSelectedChat = (id, setMessages) => {
+    return useMutation(() => MessageWithUserId(id), {
         onSuccess: (res) => {
-            setChats([res?.data, ...chats]);
-
-            return res;
+            setMessages(res?.data);
+            return res?.data;
         },
         onError: (error) => {
             toast(error?.response?.data?.message, {
@@ -19,4 +18,4 @@ const useCreateGroup = (setChats, chats) => {
     });
 };
 
-export default useCreateGroup;
+export default useSelectedChat;

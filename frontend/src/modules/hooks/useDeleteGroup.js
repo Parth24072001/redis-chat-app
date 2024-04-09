@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { toast } from "react-toastify";
-import { deleteGroup } from "../modules/api";
+import { deleteGroup } from "../api";
 
 const useDeleteGroup = () => {
     return useMutation((id) => deleteGroup(id), {

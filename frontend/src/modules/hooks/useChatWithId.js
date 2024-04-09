@@ -1,11 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { toast } from "react-toastify";
-import { ChatRename } from "../modules/api";
+import { ChatWithId } from "../api";
 
-const useChatRename = (setSelectedChat) => {
-    return useMutation((data) => ChatRename(data), {
+const useChatWithId = (setChats, chats, setSelectedChat) => {
+    return useMutation((id) => ChatWithId(id), {
         onSuccess: (res) => {
+            if (!chats?.find((c) => c._id === res?.data._id))
+                setChats([res?.data, ...chats]);
             setSelectedChat(res?.data);
             return res?.data;
         },
@@ -18,4 +20,4 @@ const useChatRename = (setSelectedChat) => {
     });
 };
 
-export default useChatRename;
+export default useChatWithId;

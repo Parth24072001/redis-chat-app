@@ -4,11 +4,11 @@ import "../src/common.css";
 // import Homepage from "./Pages/Homepage";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 
+import Home from "./Home";
+
 import withAuthentication from "./shared/components/auth/withAuthentication";
 import withoutAuthentication from "./shared/components/auth/withoutAuthentication";
-import Home from "./Home";
-import Login from "./components/Authentication/Login";
-import Signup from "./components/Authentication/Signup";
+import { Login, Signup } from "./modules/api";
 
 function App() {
     const UnAuthenticated = () => <Outlet />;

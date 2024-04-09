@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
-import EyeOnIcon from "../../assets/images/icons/eye.svg?react";
-import EyeOffIcon from "../../assets/images/icons/eye-off.svg?react";
+import EyeOnIcon from "../../../assets/images/icons/eye.svg?react";
+import EyeOffIcon from "../../../assets/images/icons/eye-off.svg?react";
 
 const TogglePasswordVisibilityButton = ({
     isPasswordShown,

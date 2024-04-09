@@ -1,17 +1,17 @@
 /* eslint-disable react/prop-types */
 
 import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
-import UserBadgeItem from "../userAvatar/UserBadgeItem";
+import UserBadgeItem from "./UserBadgeItem";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import UserListItem from "../userAvatar/UserListItem";
+import UserListItem from "./UserListItem";
 import { useUser } from "../../shared/provider/user-provider/userProvider";
 import { isEmpty } from "lodash";
-import useSearchUser from "../../hooks/useSearchUser";
-import useChatRename from "../../hooks/useChatRename";
-import useAddUserInGroup from "../../hooks/useAddUserInGroup";
-import useRemoveUserInGroup from "../../hooks/useRemoveUserInGroup";
-import useDeleteGroup from "../../hooks/useDeleteGroup";
+import useSearchUser from "../hooks/useSearchUser";
+import useChatRename from "../hooks/useChatRename";
+import useAddUserInGroup from "../hooks/useAddUserInGroup";
+import useRemoveUserInGroup from "../hooks/useRemoveUserInGroup";
+import useDeleteGroup from "../hooks/useDeleteGroup";
 
 const EditGroupModal = ({
     setOpenModel,

@@ -1,23 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import "../assets/css/styles.css";
+import "./styles.css";
 import { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 import SendIcon from "../assets/images/icons/send.svg?react";
-
 import SmileIcon from "../assets/images/icons/smile.svg?react";
 
+import ScrollableChat from "./ScrollableChat";
 import { useOnClickOutside } from "usehooks-ts";
 import { ArrowLeft } from "lucide-react";
 
 import io from "socket.io-client";
+import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 
-import { getSender } from "../shared/helpers/ChatLogics";
-import ScrollableChat from "../modules/components/ScrollableChat";
-import { ChatState } from "../shared/provider/ChatProvider/ChatProvider";
-import useSelectedChat from "../modules/hooks/useSelectedChat";
-import EditGroupChatModal from "../modules/components/EditGroupChatModal";
-import TypingIndicator from "../modules/components/TypingIndicator";
-import useSendChat from "../modules/hooks/useSendChat";
+import EditGroupChatModal from "./EditGroupChatModal";
+import TypingIndicator from "./TypingIndicator";
+import useSelectedChat from "../hooks/useSelectedChat";
+
+import useSendChat from "../hooks/useSendChat";
+import { getSender } from "../../shared/helpers/ChatLogics";
 
 let socket, selectedChatCompare;
 

@@ -1,14 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { toast } from "react-toastify";
-import { ChatWithId } from "../modules/api";
+import { addUserInGroup } from "../api";
 
-const useChatWithId = (setChats, chats, setSelectedChat) => {
-    return useMutation((id) => ChatWithId(id), {
+const useAddUserInGroup = (setSelectedChat) => {
+    return useMutation((data) => addUserInGroup(data), {
         onSuccess: (res) => {
-            if (!chats?.find((c) => c._id === res?.data._id))
-                setChats([res?.data, ...chats]);
             setSelectedChat(res?.data);
+
             return res?.data;
         },
         onError: (error) => {
@@ -20,4 +19,4 @@ const useChatWithId = (setChats, chats, setSelectedChat) => {
     });
 };
 
-export default useChatWithId;
+export default useAddUserInGroup;

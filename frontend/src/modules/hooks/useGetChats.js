@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { Chat } from "../modules/api";
+import { Chat } from "../api";
 
 const useGetChats = () => {
     return useQuery(["chats"], () => Chat(), {

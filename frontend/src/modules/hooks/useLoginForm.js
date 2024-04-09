@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { LoginSchema } from "../../validation/validation";
+import { LoginSchema } from "../../shared/validation/validation";
 
 export const useLoginForm = (login) => {
     return useFormik({

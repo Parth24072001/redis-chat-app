@@ -1,21 +1,21 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { SearchUser } from "../modules/api";
+import { MessageWithUser } from "../api";
 
-const useSearchUser = (setSearchResult) => {
-    return useMutation((search) => SearchUser(search), {
+const useSendChat = (setMessages, messages, socket) => {
+    return useMutation((data) => MessageWithUser(data), {
         onSuccess: (response) => {
-            setSearchResult(response?.data);
+            socket.emit("new message", response?.data);
+            setMessages([...messages, response?.data]);
             return response;
         },
         onError: (error) => {
             toast(error?.response?.data?.message, {
                 type: "error",
             });
-            setSearchResult([]);
             console.log(error);
         },
     });
 };
 
-export default useSearchUser;
+export default useSendChat;

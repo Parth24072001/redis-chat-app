@@ -1,12 +1,13 @@
 import { useState } from "react";
-import Chatbox from "../components/Chatbox";
-import SideDrawer from "../components/miscellaneous/SideDrawer";
-import Header from "../components/miscellaneous/Header";
+import Chatbox from "./Chatbox";
+
 import {
     ResizableHandle,
     ResizablePanel,
     ResizablePanelGroup,
-} from "../shared/components/resizable/resizable";
+} from "../../shared/components/resizable/resizable";
+import SideDrawer from "./SideDrawer";
+import Header from "./Header";
 
 const Chatpage = () => {
     const [fetchAgain, setFetchAgain] = useState(false);

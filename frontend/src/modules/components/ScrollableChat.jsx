@@ -2,13 +2,13 @@
 import { useEffect, useRef } from "react";
 import moment from "moment-timezone";
 import { CircleUserRound } from "lucide-react";
+
+import { useUser } from "../../shared/provider/user-provider/userProvider";
 import {
     isLastMessage,
     isSameSenderMargin,
     isSameUser,
-} from "../config/ChatLogics";
-
-import { useUser } from "../shared/provider/user-provider/userProvider";
+} from "../../shared/helpers/ChatLogics";
 
 const ScrollableChat = ({ messages }) => {
     const { user } = useUser();

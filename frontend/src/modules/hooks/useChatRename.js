@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { toast } from "react-toastify";
-import { MessageWithUserId } from "../modules/api";
+import { ChatRename } from "../api";
 
-const useSelectedChat = (id, setMessages) => {
-    return useMutation(() => MessageWithUserId(id), {
+const useChatRename = (setSelectedChat) => {
+    return useMutation((data) => ChatRename(data), {
         onSuccess: (res) => {
-            setMessages(res?.data);
+            setSelectedChat(res?.data);
             return res?.data;
         },
         onError: (error) => {
@@ -18,4 +18,4 @@ const useSelectedChat = (id, setMessages) => {
     });
 };
 
-export default useSelectedChat;
+export default useChatRename;

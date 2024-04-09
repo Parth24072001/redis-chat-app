@@ -5,9 +5,9 @@ import { removeItemInCookie } from "../../shared/helpers/utils";
 import { useOnClickOutside } from "usehooks-ts";
 import { useRef, useState } from "react";
 import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
-import { getSender } from "../../config/ChatLogics";
 import UserProfileModal from "./UserProfileModal";
 import ModalPortal from "../../shared/components/modal-portal/ModalPortal";
+import { getSender } from "../../shared/helpers/ChatLogics";
 
 const Header = () => {
     const navigate = useNavigate();

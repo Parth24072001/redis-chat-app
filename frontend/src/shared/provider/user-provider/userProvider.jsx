@@ -2,7 +2,7 @@
 import { createContext, useContext } from "react";
 
 import { useQuery } from "@tanstack/react-query";
-import { me } from "../../../api";
+import { me } from "../../../apiInetrcepter";
 import { getItemFromCookie } from "../../helpers/utils";
 
 export const UserContext = createContext(null);

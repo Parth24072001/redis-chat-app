@@ -15,7 +15,7 @@ body {
   border-radius: 0.5rem;
 }
 body {
-@apply dark:bg-dark;
+
   background-color: #fff;
   text-align: center;
   height: 100vh;

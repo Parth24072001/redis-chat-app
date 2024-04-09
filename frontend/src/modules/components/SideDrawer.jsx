@@ -2,14 +2,14 @@
 /* eslint-disable react/prop-types */
 // import { useHistory } from "react-router-dom";
 import { useState } from "react";
-import ChatLoading from "../ChatLoading";
-import UserListItem from "../userAvatar/UserListItem";
+import ChatLoading from "./ChatLoading";
+import UserListItem from "./UserListItem";
 import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 
-import MyChats from "../MyChats";
+import MyChats from "./MyChats";
 import { isEmpty } from "lodash";
-import useSearchUser from "../../hooks/useSearchUser";
-import useChatWithId from "../../hooks/useChatWithId";
+import useSearchUser from "../hooks/useSearchUser";
+import useChatWithId from "../hooks/useChatWithId";
 import Loader from "../../shared/components/loader/Loader";
 
 function SideDrawer() {
