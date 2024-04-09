@@ -1,4 +1,4 @@
-import api from "../../shared/api/apiinetrcepter";
+import api from "../../api/apiinetrcepter";
 
 export const Signup = (data) => {
     return api.post(`user/signup`, data);

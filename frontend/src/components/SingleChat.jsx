@@ -11,7 +11,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import { ArrowLeft } from "lucide-react";
 
 import io from "socket.io-client";
-import { ChatState } from "../Context/ChatProvider";
+import { ChatState } from "../shared/provider/ChatProvider/ChatProvider";
 
 import EditGroupChatModal from "./miscellaneous/EditGroupChatModal";
 import TypingIndicator from "./miscellaneous/TypingIndicator";

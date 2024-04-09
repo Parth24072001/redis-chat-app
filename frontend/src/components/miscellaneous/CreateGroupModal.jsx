@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";

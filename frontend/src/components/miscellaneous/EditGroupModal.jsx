@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import UserListItem from "../userAvatar/UserListItem";
-import { useUser } from "../../Context/userProvider";
+import { useUser } from "../../shared/provider/user-provider/userProvider";
 import { isEmpty } from "lodash";
 import useSearchUser from "../../hooks/useSearchUser";
 import useChatRename from "../../hooks/useChatRename";

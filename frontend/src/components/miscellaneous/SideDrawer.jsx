@@ -4,13 +4,13 @@
 import { useState } from "react";
 import ChatLoading from "../ChatLoading";
 import UserListItem from "../userAvatar/UserListItem";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 
-import Loader from "../../shared/Loader";
 import MyChats from "../MyChats";
 import { isEmpty } from "lodash";
 import useSearchUser from "../../hooks/useSearchUser";
 import useChatWithId from "../../hooks/useChatWithId";
+import Loader from "../../shared/components/loader/Loader";
 
 function SideDrawer() {
     const [search, setSearch] = useState("");

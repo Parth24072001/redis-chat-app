@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import { useUser } from "../../Context/userProvider";
+import { useUser } from "../../shared/provider/user-provider/userProvider";
 
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";

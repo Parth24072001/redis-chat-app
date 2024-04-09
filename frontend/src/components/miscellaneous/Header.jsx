@@ -2,12 +2,12 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
 import { removeItemInCookie } from "../../shared/helpers/utils";
-import ModalPortal from "../../shared/ModalPortal";
 import { useOnClickOutside } from "usehooks-ts";
 import { useRef, useState } from "react";
-import { ChatState } from "../../Context/ChatProvider";
+import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 import { getSender } from "../../config/ChatLogics";
 import UserProfileModal from "./UserProfileModal";
+import ModalPortal from "../../shared/components/modal-portal/ModalPortal";
 
 const Header = () => {
     const navigate = useNavigate();

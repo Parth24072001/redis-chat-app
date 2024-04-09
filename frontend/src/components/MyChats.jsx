@@ -3,13 +3,13 @@
 import { useEffect } from "react";
 import { getSender } from "../config/ChatLogics";
 import ChatLoading from "./ChatLoading";
-import { ChatState } from "../Context/ChatProvider";
+import { ChatState } from "../shared/provider/ChatProvider/ChatProvider";
 
 import { isArray } from "lodash";
-import { useUser } from "../Context/userProvider";
+import { useUser } from "../shared/provider/user-provider/userProvider";
 import CreateGroupChatModal from "./miscellaneous/CreateGroupChatModal";
 import useGetChats from "../hooks/useGetChats";
-import Loader from "../shared/Loader";
+import Loader from "../shared/components/loader/Loader";
 
 const MyChats = () => {
     const { setSelectedChat, chats, setChats } = ChatState();

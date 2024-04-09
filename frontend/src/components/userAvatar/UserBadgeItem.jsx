@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { useUser } from "../../Context/userProvider";
+import { useUser } from "../../shared/provider/user-provider/userProvider";
 import { CircleX } from "lucide-react";
 
 const UserBadgeItem = ({ users, handleFunction, admin }) => {

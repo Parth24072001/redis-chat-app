@@ -8,7 +8,7 @@ import {
     isSameUser,
 } from "../config/ChatLogics";
 
-import { useUser } from "../Context/userProvider";
+import { useUser } from "../shared/provider/user-provider/userProvider";
 
 const ScrollableChat = ({ messages }) => {
     const { user } = useUser();

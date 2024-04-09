@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import { UserProvider } from "./Context/userProvider";
 import Chatpage from "./Pages/Chatpage";
+import { UserProvider } from "./shared/provider/user-provider/userProvider";
 
 const Home = () => {
     return (
@@ -8,7 +8,6 @@ const Home = () => {
             <UserProvider>
                 <Routes>
                     <Route path="/" index element={<Chatpage />} />
-                    {/* <Route path="/" index element={<Chatpage />} /> */}
                 </Routes>
             </UserProvider>
         </>

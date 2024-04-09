@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import ModalPortal from "../../shared/ModalPortal";
 import CreateGroupModal from "./CreateGroupModal";
+import ModalPortal from "../../shared/components/modal-portal/ModalPortal";
 
 function CreateGroupChatModal({ fetchMessages, fetchAgain, setFetchAgain }) {
     const [modalOpen, setModalOpen] = useState(false);
