@@ -1,23 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import "./styles.css";
+import "../../assets/css/styles.css";
 import { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
-import SendIcon from "../assets/images/icons/send.svg?react";
-import SmileIcon from "../assets/images/icons/smile.svg?react";
+import SendIcon from "../../assets/images/icons/send.svg?react";
 
-import ScrollableChat from "./ScrollableChat";
+import SmileIcon from "../../assets/images/icons/smile.svg?react";
+
 import { useOnClickOutside } from "usehooks-ts";
 import { ArrowLeft } from "lucide-react";
 
 import io from "socket.io-client";
-import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 
-import EditGroupChatModal from "./EditGroupChatModal";
-import TypingIndicator from "./TypingIndicator";
-import useSelectedChat from "../hooks/useSelectedChat";
-
-import useSendChat from "../hooks/useSendChat";
 import { getSender } from "../../shared/helpers/ChatLogics";
+import ScrollableChat from "./ScrollableChat";
+import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
+import useSelectedChat from "../hooks/useSelectedChat";
+import EditGroupChatModal from "./modal/EditGroupChatModal";
+import TypingIndicator from "./TypingIndicator";
+import useSendChat from "../hooks/useSendChat";
 
 let socket, selectedChatCompare;
 
@@ -69,8 +69,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         messages,
         socket
     );
-    const sendMessage = async (event) => {
-        if (event.key === "Enter" && newMessage) {
+
+    const sendMessage = async (event, useEnterKey) => {
+        if (newMessage) {
+            if (useEnterKey && event.key !== "Enter") return;
             event.preventDefault();
             socket.emit("stop typing", selectedChat._id);
 
@@ -81,17 +83,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             });
         }
     };
-    const sendMessageWithButton = async (event) => {
-        if (newMessage) {
-            event.preventDefault();
-            socket.emit("stop typing", selectedChat._id);
 
-            setNewMessage("");
-            MessageWithUser({
-                content: newMessage,
-                chatId: selectedChat,
-            });
-        }
+    const handleEnterKeyPress = (event) => {
+        sendMessage(event, true);
+    };
+
+    // Handle button click event
+    const handleButtonClick = (event) => {
+        sendMessage(event, false);
     };
 
     useEffect(() => {
@@ -185,7 +184,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                             <ScrollableChat messages={messages} />
                         </div>
 
-                        <form onKeyDown={sendMessage} id="first-name">
+                        <form onKeyDown={handleEnterKeyPress} id="first-name">
                             {istyping ? <TypingIndicator /> : <></>}
                             <div className="flex relative w-full gap-2 mt-2">
                                 {openEmoji && (
@@ -215,7 +214,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={sendMessageWithButton}
+                                    onClick={handleButtonClick}
                                 >
                                     <SendIcon />
                                 </button>

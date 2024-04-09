@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import CreateGroupModal from "./CreateGroupModal";
-import ModalPortal from "../../shared/components/modal-portal/ModalPortal";
+import EditGroupModal from "./EditGroupModal";
+import ModalPortal from "../../../shared/components/modal-portal/ModalPortal";
 
-function CreateGroupChatModal({ fetchMessages, fetchAgain, setFetchAgain }) {
+function EditGroupChatModal({ fetchMessages, fetchAgain, setFetchAgain }) {
     const [modalOpen, setModalOpen] = useState(false);
 
     return (
@@ -12,10 +12,10 @@ function CreateGroupChatModal({ fetchMessages, fetchAgain, setFetchAgain }) {
                 className=" rounded bg-indigo-50 px-2 py-1 text-sm font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100"
                 onClick={() => setModalOpen(true)}
             >
-                Create Group
+                Edit Group
             </button>
             <ModalPortal open={modalOpen}>
-                <CreateGroupModal
+                <EditGroupModal
                     setOpenModel={setModalOpen}
                     openModel={modalOpen}
                     fetchMessages={fetchMessages}
@@ -27,4 +27,4 @@ function CreateGroupChatModal({ fetchMessages, fetchAgain, setFetchAgain }) {
     );
 }
 
-export default CreateGroupChatModal;
+export default EditGroupChatModal;

@@ -6,7 +6,7 @@ import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 
 import { isArray } from "lodash";
 import { useUser } from "../../shared/provider/user-provider/userProvider";
-import CreateGroupChatModal from "./CreateGroupChatModal";
+import CreateGroupChatModal from "./modal/CreateGroupChatModal";
 import useGetChats from "../hooks/useGetChats";
 import Loader from "../../shared/components/loader/Loader";
 import { getSender } from "../../shared/helpers/ChatLogics";
@@ -38,7 +38,7 @@ const MyChats = () => {
                             chats?.map((chat, index) => (
                                 <button
                                     onClick={() => setSelectedChat(chat)}
-                                    className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg mb-1 w-full flex flex-col justify-start items-start"
+                                    className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg mb-1 w-full flex flex-col justify-start items-start h-[64px]"
                                     key={index}
                                 >
                                     <p className=" text-lg text-black">

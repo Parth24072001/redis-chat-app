@@ -124,4 +124,11 @@ canvas {
   @apply mx-auto !h-auto !max-w-[222px] object-contain;
 }
 
+.messages {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
 

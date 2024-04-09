@@ -1,5 +1,5 @@
-import SingleChat from "../../components/SingleChat";
 import "../../assets/css/styles.css";
+import SingleChat from "./SingleChat";
 
 // eslint-disable-next-line react/prop-types
 const Chatbox = ({ fetchAgain, setFetchAgain }) => {
