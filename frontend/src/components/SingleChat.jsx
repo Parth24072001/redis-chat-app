@@ -8,6 +8,7 @@ import SmileIcon from "../assets/images/icons/smile.svg?react";
 
 import ScrollableChat from "./ScrollableChat";
 import { useOnClickOutside } from "usehooks-ts";
+import { ArrowLeft } from "lucide-react";
 
 import io from "socket.io-client";
 import { ChatState } from "../Context/ChatProvider";
@@ -107,20 +108,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }, [selectedChat]);
 
     useEffect(() => {
-        console.log({ messages });
-
         const handleMessageReceived = (newMessageReceived) => {
             if (
                 !selectedChatCompare ||
                 selectedChatCompare._id !== newMessageReceived.chat._id
             ) {
                 if (!notification.includes(newMessageReceived)) {
-                    setNotification([newMessageReceived, ...notification]);
+                    setNotification((prevNotification) => [
+                        ...prevNotification,
+                        newMessageReceived,
+                    ]);
                     setFetchAgain(!fetchAgain);
                 }
             } else {
-                console.log({ messages });
-                console.log({ newMessageReceived });
                 setMessages((prevMessages) => [
                     ...prevMessages,
                     newMessageReceived,
@@ -164,7 +164,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <>
                     <text className="text-base md:text-lg pb-3 px-2 w-full font-work-sans flex justify-between items-center">
                         <button onClick={() => setSelectedChat("")}>
-                            back
+                            <ArrowLeft />
                         </button>
                         {messages &&
                             (!selectedChat.isGroupChat ? (

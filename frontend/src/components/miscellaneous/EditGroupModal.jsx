@@ -5,7 +5,6 @@ import UserBadgeItem from "../userAvatar/UserBadgeItem";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import UserListItem from "../userAvatar/UserListItem";
-
 import { useUser } from "../../Context/userProvider";
 import { isEmpty } from "lodash";
 import useSearchUser from "../../hooks/useSearchUser";

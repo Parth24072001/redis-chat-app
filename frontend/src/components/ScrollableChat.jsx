@@ -65,7 +65,7 @@ const ScrollableChat = ({ messages }) => {
                         >
                             {m.content}
                             <p className=" text-xs">
-                                {moment(messages?.createdAt).format(
+                                {moment(m?.updatedAt).format(
                                     "DD MMMM YYYY hh:mm A"
                                 )}
                             </p>

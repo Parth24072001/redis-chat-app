@@ -2,8 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 
 import { toast } from "react-toastify";
 import { removeUserInGroup } from "../modules/api";
+import { useUser } from "../Context/userProvider";
 
 const useRemoveUserInGroup = (setSelectedChat, userId) => {
+    const { user } = useUser();
     return useMutation((data) => removeUserInGroup(data), {
         onSuccess: (res) => {
             userId === user?.currentUser._id

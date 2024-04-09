@@ -38,20 +38,20 @@ const MyChats = () => {
                             chats?.map((chat, index) => (
                                 <button
                                     onClick={() => setSelectedChat(chat)}
-                                    className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg mb-1 w-full"
+                                    className="cursor-pointer bg-teal-500 text-white  px-3 py-2 rounded-lg mb-1 w-full flex flex-col justify-start items-start"
                                     key={index}
                                 >
-                                    <span className=" text-lg text-black">
+                                    <p className=" text-lg text-black">
                                         {!chat.isGroupChat
                                             ? getSender(
                                                   user?.currentUser,
                                                   chat.users
                                               )
                                             : chat.chatName}
-                                    </span>{" "}
-                                    :{" "}
+                                    </p>
+
                                     {chat.latestMessage && (
-                                        <span>
+                                        <p className=" text-sm max-w-[120px] w-full overflow-hidden">
                                             {chat.latestMessage.content.length >
                                             50
                                                 ? chat.latestMessage.content.substring(
@@ -59,7 +59,7 @@ const MyChats = () => {
                                                       51
                                                   ) + "..."
                                                 : chat.latestMessage.content}
-                                        </span>
+                                        </p>
                                     )}
                                 </button>
                             ))}
