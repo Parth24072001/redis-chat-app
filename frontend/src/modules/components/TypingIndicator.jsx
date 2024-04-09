@@ -1,9 +1,11 @@
 const TypingIndicator = () => {
     return (
-        <div className="typing-indicator">
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
+        <div className="typingIndicatorContainer">
+            <div className="typingIndicatorBubble">
+                <div className="typingIndicatorBubbleDot"></div>
+                <div className="typingIndicatorBubbleDot"></div>
+                <div className="typingIndicatorBubbleDot"></div>
+            </div>
         </div>
     );
 };
