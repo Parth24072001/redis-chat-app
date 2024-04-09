@@ -51,7 +51,7 @@ const MyChats = () => {
                                     </p>
 
                                     {chat.latestMessage && (
-                                        <p className=" text-sm max-w-[120px] w-full overflow-hidden">
+                                        <p className=" text-sm max-w-[120px] w-full overflow-hidden text-left">
                                             {chat.latestMessage.content.length >
                                             50
                                                 ? chat.latestMessage.content.substring(
