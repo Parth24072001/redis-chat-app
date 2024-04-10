@@ -1,3 +1,5 @@
+Scaleable-chat App using WebSockets , nodeJS , Redis, Prisma, Kafkajs
+
 setup backend package json
 
 - npm i -y
@@ -55,3 +57,13 @@ sudo rm -rf <foldername>
 # 10. List all Docker containers, including stopped ones
 
 docker ps -a
+
+yarn prisma studio --> show database data
+npx prisma migrate dev --name init --> migrate data base
+
+how to work with redis in cli
+
+1. docker ps --> list of container
+2. docker exec -it 3e10b255b188 bash -> redis container id
+3. redis-cli
+4. ping

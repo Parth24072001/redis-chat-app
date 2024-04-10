@@ -58,12 +58,13 @@ services:
       - custom
 
   redis:
-    image: redis:latest
+    image: redis/redis-stack:latest
     container_name: redis_chat
     restart: unless-stopped
     tty: true
     ports:
       - "6379:6379"
+      - "8001:8001"
     networks:
       - custom
 
