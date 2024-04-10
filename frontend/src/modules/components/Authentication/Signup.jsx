@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import useSignUp from "../../modules/hooks/useSignUp";
 import { useState } from "react";
-import { useSignUpForm } from "../../modules/hooks/useSignUpForm";
-import TogglePasswordVisibilityButton from "../../shared/components/TogglePasswordVisibilityButton/TogglePasswordVisibilityButton";
+import { useSignUpForm } from "../../hooks/useSignUpForm";
+import useSignUp from "../../hooks/useSignUp";
+import TogglePasswordVisibilityButton from "../../../shared/components/TogglePasswordVisibilityButton/TogglePasswordVisibilityButton";
 
 const Signup = () => {
     const { mutate: signUpMutation } = useSignUp();

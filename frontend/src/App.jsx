@@ -8,7 +8,8 @@ import Home from "./Home";
 
 import withAuthentication from "./shared/components/auth/withAuthentication";
 import withoutAuthentication from "./shared/components/auth/withoutAuthentication";
-import { Login, Signup } from "./modules/api";
+import Login from "./modules/components/Authentication/Login";
+import Signup from "./modules/components/Authentication/Signup";
 
 function App() {
     const UnAuthenticated = () => <Outlet />;
