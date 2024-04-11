@@ -39,7 +39,7 @@ const ScrollableChat = ({ messages }) => {
                         <p
                             style={{
                                 backgroundColor: `${
-                                    m.sender._id === user?.currentUser._id
+                                    m.sender._id == user?.currentUser._id
                                         ? "#BEE3F8"
                                         : "#B9F5D0"
                                 }`,

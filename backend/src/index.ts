@@ -9,6 +9,7 @@ import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
 import Redis from "ioredis"; // Import Redis library
+import { produceMessage } from "./services/kafka";
 
 dotenv.config({ path: "./.env" });
 connectDB();
@@ -75,7 +76,7 @@ io.on("connection", (socket) => {
 
       socket.in(user._id).emit("message recieved", newMessageRecieved);
     });
-    // Publish the new message to Redis channel
+
     pub.publish("MESSAGES", JSON.stringify(newMessageRecieved));
   });
 });
@@ -83,9 +84,12 @@ io.on("connection", (socket) => {
 // Handle Redis pub/sub
 sub.subscribe("MESSAGES");
 sub.on("message", async (channel, message) => {
+  console.log(message);
   if (channel === "MESSAGES") {
     io.emit("message", { message });
     console.log("new message from redis");
+    await produceMessage(message);
+    console.log("Message Produced to Kafka Broker");
   }
 });
 

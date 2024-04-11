@@ -17,7 +17,7 @@ import { ChatState } from "../../shared/provider/ChatProvider/ChatProvider";
 import useSelectedChat from "../hooks/useSelectedChat";
 import EditGroupChatModal from "./modal/EditGroupChatModal";
 import TypingIndicator from "./TypingIndicator";
-import useSendChat from "../hooks/useSendChat";
+// import useSendChat from "../hooks/useSendChat";
 
 let socket, selectedChatCompare;
 
@@ -51,10 +51,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         setNotification,
     } = ChatState();
 
-    const { mutate: SearchUser } = useSelectedChat(
+    const { mutate: SearchUser, data } = useSelectedChat(
         selectedChat?._id,
         setMessages
     );
+    console.log(data?.data[data?.data.length - 1]);
 
     const fetchMessages = async () => {
         if (!selectedChat) return;
@@ -64,23 +65,86 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         socket.emit("join chat", selectedChat?._id);
     };
 
-    const { mutate: MessageWithUser } = useSendChat(
-        setMessages,
-        messages,
-        socket
-    );
+    // const { mutate: MessageWithUser } = useSendChat(
+    //     setMessages,
+    //     messages,
+    //     socket
+    // );
 
     const sendMessage = async (event, useEnterKey) => {
         if (newMessage) {
             if (useEnterKey && event.key !== "Enter") return;
             event.preventDefault();
             socket.emit("stop typing", selectedChat._id);
-
             setNewMessage("");
-            MessageWithUser({
+            // MessageWithUser({
+            //     content: newMessage,
+            //     chatId: selectedChat,
+            // });
+            socket.emit("new message", {
+                _id: "6617c575d1539d1ca756ebae",
+                sender: {
+                    _id: data?.data?.sender?._id,
+                    name: data?.data?.sender?.name,
+                    email: data?.data?.sender?.email,
+                    pic: data?.data?.sender?.pic,
+                },
                 content: newMessage,
-                chatId: selectedChat,
+                readBy: [],
+                chat: {
+                    _id: data?.data[data?.data.length - 1].chat?._id,
+                    isGroupChat:
+                        data?.data[data?.data.length - 1].chat?.isGroupChat,
+                    users: data?.data[data?.data.length - 1].chat?.users,
+                    chatName: data?.data[data?.data.length - 1].chat?.chatName,
+                    groupAdmin:
+                        data?.data[data?.data.length - 1].chat?.groupAdmin,
+                    createdAt:
+                        data?.data[data?.data.length - 1].chat?.createdAt,
+                    updatedAt:
+                        data?.data[data?.data.length - 1].chat?.updatedAt,
+                    __v: data?.data[data?.data.length - 1].chat?.__v,
+                    latestMessage:
+                        data?.data[data?.data.length - 1].chat?.latestMessage,
+                },
+                createdAt: "2024-04-11T11:11:49.510Z",
+                updatedAt: "2024-04-11T11:11:49.510Z",
+                __v: 0,
             });
+            setMessages([
+                ...messages,
+
+                {
+                    _id: "6617c575d1539d1ca756ebae",
+                    sender: {
+                        _id: "66125459dff88249882743dd",
+                        name: "test1",
+                        email: "test1@gmail.com",
+                        pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+                    },
+                    content: newMessage,
+                    readBy: [],
+                    chat: {
+                        _id: "6614d530a8dddd613d9cc55d",
+                        isGroupChat: true,
+                        users: [
+                            "6613b80adec79cec137aca1d",
+                            "66125459dff88249882743dd",
+                            "6613b860dec79cec137aca32",
+                            "6613d4a0dec79cec137acaf1",
+                        ],
+                        chatName: "fdsfsd",
+                        groupAdmin: "66125459dff88249882743dd",
+                        createdAt: "2024-04-09T05:42:08.370Z",
+                        updatedAt: "2024-04-11T11:11:49.591Z",
+                        __v: 0,
+                        latestMessage: "6617c575d1539d1ca756ebae",
+                    },
+                    createdAt: "2024-04-11T11:11:49.510Z",
+                    updatedAt: "2024-04-11T11:11:49.510Z",
+                    __v: 0,
+                },
+            ]);
         }
     };
 
