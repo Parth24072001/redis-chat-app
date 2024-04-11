@@ -6,18 +6,18 @@ networks:
 
 services:
   # Node
-  node:
-    image: node:18
-    container_name: node_chat
-    tty: true
-    working_dir: /var/www/html
-    ports:
-      - "4000:4000"
-      - "5173:5173"
-    volumes:
-      - .:/var/www/html
-    networks:
-      - custom
+  # node:
+  #   image: node:18
+  #   container_name: node_chat
+  #   tty: true
+  #   working_dir: /var/www/html
+  #   ports:
+  #     - "4000:4000"
+  #     - "5173:5173"
+  #   volumes:
+  #     - .:/var/www/html
+  #   networks:
+  #     - custom
 
   #Mongo
   mongo:

@@ -58,12 +58,29 @@ sudo rm -rf <foldername>
 
 docker ps -a
 
-yarn prisma studio --> show database data
-npx prisma migrate dev --name init --> migrate data base
+# 11. multiple server start horizontal scaleing
 
-how to work with redis in cli
+export PORT=port number && npm run dev
+
+# 12. This command removes all Docker containers. It's useful when you want to clean up all containers that are not currently running.
+
+docker rm $(docker ps -aq)
+
+# 13. This command stops a specific Docker container identified by its ID (b97615baaabd). You would replace b97615baaabd with the actual container ID you want to stop.
+
+docker stop b97615baaabd
+
+# 14.This command allows you to execute a bash shell within the running Node.js container managed by Docker Compose. This is useful when you need to interact with the container directly, for example, to run additional commands or troubleshoot issues
+
+docker-compose exec node bash
+
+# 15. how to work with redis in cli
 
 1. docker ps --> list of container
 2. docker exec -it 3e10b255b188 bash -> redis container id
 3. redis-cli
 4. ping
+5. localhost:8001 redis database
+
+yarn prisma studio --> show database data
+npx prisma migrate dev --name init --> migrate data base
