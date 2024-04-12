@@ -1,32 +1,68 @@
-import { Kafka } from "kafkajs";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { Kafka, Producer, Partitioners } from "kafkajs";
 
 const kafka = new Kafka({
-  clientId: "my-app",
-  brokers: ["kafka1:9092", "kafka2:9092"],
+  brokers: ["localhost:9092"],
 });
 
-export async function createProducer() {
-  console.log("here");
-  const producer = kafka.producer();
-  await producer.connect();
-  await producer.send({
-    topic: "test-topic",
-    messages: [{ value: "Hello KafkaJS user!" }],
-  });
+let producer: null | Producer = null;
 
+export async function createProducer() {
+  if (producer) return producer;
+
+  const _producer = kafka.producer({
+    createPartitioner: Partitioners.LegacyPartitioner,
+  });
+  await _producer.connect();
+  console.log("Producer connected");
+  producer = _producer;
   return producer;
 }
 
-export async function produceMessage(message: string) {
-  const producer = await createProducer();
-  await producer.send({
-    messages: [{ key: `message-${Date.now()}`, value: message }],
-    topic: "MESSAGES",
+let consumer: any = null;
+
+export async function createConsumer() {
+  if (consumer) return consumer;
+
+  consumer = kafka.consumer({ groupId: "test-group" });
+  await consumer.connect();
+  await consumer.subscribe({ topic: "test-topic", fromBeginning: true });
+
+  await consumer.run({
+    eachMessage: async ({ message }: { message: any }) => {
+      console.log({
+        value: message.value.toString(),
+      });
+    },
   });
-  return true;
+
+  console.log("Consumer connected and subscribed");
+  return consumer;
+}
+
+export async function produceMessageWithRetry(
+  message: string,
+  maxRetries: number = 3,
+  baseRetryDelay: number = 1000
+) {
+  let retryCount = 0;
+  while (retryCount < maxRetries) {
+    try {
+      const producer = await createProducer();
+      await producer.send({
+        messages: [{ key: `message-${Date.now()}`, value: message }],
+        topic: "MESSAGES",
+      });
+      console.log("Message produced successfully");
+      return;
+    } catch (error) {
+      console.error("Error producing message:", error);
+
+      const delay = Math.pow(2, retryCount) * baseRetryDelay;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      retryCount++;
+    }
+  }
+  console.error("Failed to produce message after retries.");
 }
 
 export async function startMessageConsumer() {
@@ -35,36 +71,24 @@ export async function startMessageConsumer() {
   await consumer.connect();
   await consumer.subscribe({ topic: "MESSAGES", fromBeginning: true });
 
-  // await consumer.run({
-  //   autoCommit: true,
-  //   eachMessage: async ({ message: kafkaMessage }) => {
-  //     if (!kafkaMessage.value) return;
-  //     console.log(`New Message Received..`);
-
-  //     const newMessage = {
-  //       sender: "7643645",
-  //       content: kafkaMessage.value.toString(),
-  //       chat: "647676",
-  //     };
-
-  //     try {
-  //       let savedMessage = await Message.create(newMessage);
-  //       savedMessage = await savedMessage
-  //         .populate("sender", "name pic")
-  //         .execPopulate();
-  //       savedMessage = await savedMessage.populate("chat").execPopulate();
-  //       savedMessage = await User.populate(savedMessage, {
-  //         path: "chat.users",
-  //         select: "name pic email",
-  //       });
-
-  //       // Handle further processing or updates
-  //     } catch (error) {
-  //       console.error("Error processing message:", error);
-  //       // Handle the error gracefully, you might want to log it or take other actions
-  //     }
-  //   },
-  // });
+  await consumer.run({
+    autoCommit: true,
+    eachMessage: async ({ message, pause }) => {
+      if (!message.value) return;
+      try {
+        // await prismaClient.message.create({
+        //   data: {
+        //     text: message.value?.toString(),
+        //   },
+        // });
+      } catch (err) {
+        console.log("Something is wrong");
+        pause();
+        setTimeout(() => {
+          consumer.resume([{ topic: "MESSAGES" }]);
+        }, 60 * 1000);
+      }
+    },
+  });
 }
-
 export default kafka;
